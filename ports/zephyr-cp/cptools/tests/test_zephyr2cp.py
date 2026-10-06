@@ -24,6 +24,7 @@ from zephyr2cp import (
     MINIMUM_RAM_SIZE,
     add_toml_pin_names,
     _toml_status_pin,
+    zephyr_dts_to_cp_board,
 )
 
 
@@ -796,3 +797,148 @@ class TestTomlStatusPin:
     def test_unknown_name_raises(self):
         with pytest.raises(RuntimeError, match="STATUS_NEOPIXEL = 'NOPE' is not a board pin name"):
             _toml_status_pin({"STATUS_NEOPIXEL": "NOPE"}, self.BOARD_NAMES, "STATUS_NEOPIXEL")
+
+
+class TestPWMIOCodegen:
+    """Exercise capability detection and preserved iobroker tables together."""
+
+    def _generate(self, tmp_path, pwm_entries, pm_config=""):
+        zephyr_board_dir = tmp_path / "boards" / "nordic" / "pwm_test"
+        zephyr_board_dir.mkdir(parents=True)
+        (zephyr_board_dir / "board.yml").write_text(
+            "board:\n"
+            "  name: pwm_test\n"
+            "  vendor: nordic\n"
+            "  full_name: PWM test board\n"
+            "  socs:\n"
+            "    - name: nrf52840\n"
+        )
+        zephyr_build_dir = tmp_path / "zephyr"
+        zephyr_build_dir.mkdir()
+        (zephyr_build_dir / "runners.yaml").write_text(
+            f"config:\n  board_dir: {zephyr_board_dir}\n"
+        )
+        (zephyr_build_dir / ".config").write_text(
+            "CONFIG_PWM_NRFX=y\n"
+            "CONFIG_PINCTRL_NRF=y\n"
+            "CONFIG_PINCTRL_DYNAMIC=y\n"
+            "CONFIG_DEVICE_DEINIT_SUPPORT=y\n"
+            "CONFIG_IOBROKER_PACKAGE_ONE_TO_ONE=y\n" + pm_config
+        )
+        states = []
+        nodes = []
+        for index, (routing, center_aligned) in enumerate(pwm_entries):
+            # NRF_FUN_PWM_OUT0..3 in the high byte; low nine bits are GPIO
+            # numbers, with 0x1ff meaning NRF_PIN_DISCONNECTED.
+            psels = (
+                "0x160001ff 0x170001ff 0x180001ff 0x190001ff"
+                if routing == "dynamic"
+                else hex(0x16000000 | (2 + index))
+            )
+            states.append(
+                f"pwm{index}_default: pwm{index}_default {{\n"
+                f"    group1 {{ psels = <{psels}>; }};\n"
+                "};\n"
+            )
+            address = 0x4001C000 + index * 0x1000
+            alignment = "center-aligned;" if center_aligned else ""
+            nodes.append(f"""
+    pwm{index}: pwm@{address:x} {{
+        compatible = "nordic,nrf-pwm";
+        reg = <0x{address:x} 0x1000>;
+        status = "okay";
+        #pwm-cells = <3>;
+        pinctrl-0 = <&pwm{index}_default>;
+        pinctrl-names = "default";
+        {alignment}
+    }};
+""")
+        (zephyr_build_dir / "zephyr.dts").write_text(f"""
+/dts-v1/;
+/ {{
+    #address-cells = <1>;
+    #size-cells = <1>;
+    chosen {{ zephyr,sram = &sram0; }};
+    sram0: memory@20000000 {{
+        compatible = "mmio-sram";
+        reg = <0x20000000 0x40000>;
+    }};
+    gpio0: gpio@50000000 {{
+        compatible = "nordic,nrf-gpio";
+        reg = <0x50000000 0x1000>;
+        gpio-controller;
+        #gpio-cells = <2>;
+        ngpios = <32>;
+    }};
+    pinctrl {{ {"".join(states)} }};
+    {"".join(nodes)}
+}};
+""")
+        build_dir = tmp_path / "circuitpython"
+        board_info = zephyr_dts_to_cp_board("pwm_test", portdir, build_dir, zephyr_build_dir)
+        return board_info, (build_dir / "board" / "board.c").read_text()
+
+    @pytest.mark.parametrize(
+        "pwm_entries,expected",
+        [
+            pytest.param([], False, id="empty"),
+            pytest.param([("fixed", False)], False, id="fixed-only-edge"),
+            pytest.param([("fixed", True)], False, id="fixed-only-center"),
+            pytest.param([("dynamic", False)], True, id="dynamic-edge"),
+            pytest.param([("dynamic", False), ("fixed", True)], True, id="mixed-fixed-center"),
+            pytest.param([("dynamic", True)], False, id="dynamic-center"),
+            pytest.param([("dynamic", False), ("dynamic", True)], False, id="dynamic-edge-center"),
+            pytest.param([("dynamic", True), ("dynamic", False)], False, id="dynamic-center-edge"),
+        ],
+    )
+    def test_pwm_pool_capability(self, tmp_path, pwm_entries, expected):
+        board_info, board_c = self._generate(tmp_path, pwm_entries)
+
+        assert board_info["pwmio"] is expected
+        assert board_info["neopixel_write"] is True
+        pwm_table = board_c.split("const iobroker_instance_t iobroker_pwm_buses[] = {", 1)[
+            1
+        ].split("};", 1)[0]
+        assert pwm_table.count(".dev = ") == len(pwm_entries)
+        reserved_pads = []
+        for index, (routing, _) in enumerate(pwm_entries):
+            entry = next(line for line in pwm_table.splitlines() if f"(pwm{index})" in line)
+            if routing == "fixed":
+                reserved_pads.append(str(2 + index))
+                assert f".dt_psels = cp_pwm{index}_dt_psels, .dt_psel_count = 1" in entry
+                assert (
+                    f"static const pinctrl_soc_pin_t cp_pwm{index}_dt_psels[] = "
+                    f"{{ {hex(0x16000000 | (2 + index))} }};"
+                ) in board_c
+            else:
+                assert ".dt_psels" not in entry
+        assert (
+            "const uint16_t iobroker_reserved_pads[] = { " + ", ".join(reserved_pads) + " };"
+        ) in board_c
+
+    @pytest.mark.parametrize(
+        "pm_config,expected",
+        [
+            pytest.param("", True, id="absent"),
+            pytest.param(
+                "# CONFIG_PM_DEVICE is not set\n# CONFIG_PM_DEVICE_RUNTIME is not set\n",
+                True,
+                id="disabled",
+            ),
+            pytest.param("CONFIG_PM_DEVICE=n\nCONFIG_PM_DEVICE_RUNTIME=n\n", True, id="n-n"),
+            pytest.param("CONFIG_PM_DEVICE=y\n", False, id="device-pm"),
+            pytest.param("CONFIG_PM_DEVICE_RUNTIME=y\n", False, id="runtime-pm"),
+            pytest.param("CONFIG_PM_DEVICE=y\nCONFIG_PM_DEVICE_RUNTIME=n\n", False, id="y-n"),
+            pytest.param("CONFIG_PM_DEVICE=n\nCONFIG_PM_DEVICE_RUNTIME=y\n", False, id="n-y"),
+            pytest.param("CONFIG_PM_DEVICE=y\nCONFIG_PM_DEVICE_RUNTIME=y\n", False, id="y-y"),
+        ],
+    )
+    def test_device_pm_capability(self, tmp_path, pm_config, expected):
+        pwm_entries = [("dynamic", False), ("fixed", False)]
+        baseline_info, baseline_c = self._generate(tmp_path / "baseline", pwm_entries)
+        board_info, board_c = self._generate(tmp_path / "configured", pwm_entries, pm_config)
+
+        assert baseline_info["pwmio"] is True
+        assert board_info["pwmio"] is expected
+        assert board_info["neopixel_write"] is True
+        assert board_c == baseline_c

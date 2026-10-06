@@ -307,3 +307,7 @@ bool iobroker_gpio_release(const struct device *port, gpio_pin_t number);
 // device is de-initialized on release, so it is left uninitialized; the
 // caller initializes it again when it allocates the instance next.
 bool iobroker_release(const struct device *dev);
+
+// Release only after successful deinitialization. Errors leave the claim held.
+// An already uninitialized device is safe to release (construction failure).
+int iobroker_release_checked(const struct device *dev);

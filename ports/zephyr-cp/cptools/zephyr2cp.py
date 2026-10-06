@@ -1395,10 +1395,19 @@ static MP_DEFINE_CONST_FUN_OBJ_0({function_object}, {c_function_name});""".lstri
     # pins match their state.
     pinctrl_nrf = False
     pwm_nrfx = False
+    dynamic_pinctrl = False
+    device_deinit = False
+    device_pm = False
     if config_present:
         for line in config.read_text().splitlines():
             if line.startswith("CONFIG_PINCTRL_NRF="):
                 pinctrl_nrf = line.strip().endswith("=y")
+            elif line.startswith("CONFIG_PINCTRL_DYNAMIC="):
+                dynamic_pinctrl = line.strip().endswith("=y")
+            elif line.startswith("CONFIG_DEVICE_DEINIT_SUPPORT="):
+                device_deinit = line.strip().endswith("=y")
+            elif line.startswith(("CONFIG_PM_DEVICE=", "CONFIG_PM_DEVICE_RUNTIME=")):
+                device_pm = device_pm or line.strip().endswith("=y")
             elif line.startswith("CONFIG_PWM_NRFX="):
                 # Zephyr's nRF PWM driver defines the PWM instance devices.
                 # Without it, PWM nodes have no device to reference, and
@@ -1407,6 +1416,10 @@ static MP_DEFINE_CONST_FUN_OBJ_0({function_object}, {c_function_name});""".lstri
                 # both the pwm pool and the module follow this symbol.
                 pwm_nrfx = line.strip().endswith("=y")
     board_info["neopixel_write"] = pwm_nrfx
+    # PWMOut cannot restore its routing and sequence state after device PM.
+    board_info["pwmio"] = (
+        pwm_nrfx and pinctrl_nrf and dynamic_pinctrl and device_deinit and not device_pm
+    )
 
     iobroker_includes = """
 #include <zephyr/device.h>
@@ -1466,6 +1479,17 @@ const size_t iobroker_gpio_port_count = {count};
                     fixed_entries.append((labels[0], psels, len(psels)))
 
             entries = dynamic_entries + fixed_entries
+            if pool == "pwm":
+                # Fixed pads are reserved, so PWMOut can only allocate dynamic
+                # entries. Any dynamic entry may be selected by the allocator.
+                board_info["pwmio"] = (
+                    board_info["pwmio"]
+                    and bool(dynamic_entries)
+                    and all(
+                        "center-aligned" not in device_tree.label2node[label].props
+                        for label, _, _ in dynamic_entries
+                    )
+                )
 
             # Always define all four pools, even when empty: iobroker.c and
             # the nRF routing code reference every pool's tables whenever

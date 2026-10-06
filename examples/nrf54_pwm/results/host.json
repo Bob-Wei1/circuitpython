@@ -1,0 +1,20 @@
+{
+  "no_pm": {
+    "lifecycle_cases": 125,
+    "pm_build": false
+  },
+  "pm": {
+    "configuration_rejections": 18,
+    "hardware_calls": 0
+  },
+  "runtime_pm": {
+    "configuration_rejections": 18,
+    "hardware_calls": 0
+  },
+  "pm_and_runtime_pm": {
+    "configuration_rejections": 18,
+    "hardware_calls": 0
+  },
+  "frequency_oracle_cases": 3122,
+  "exhaustive_duty_cases": 327680
+}

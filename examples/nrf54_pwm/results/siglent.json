@@ -1,0 +1,2519 @@
+{
+  "date": "2026-10-06",
+  "source_commit": "25d60b8fa56140b89ea7e7b453afa62dbe275ab8",
+  "physical_target": "nRF54LM20 DK with LM20B",
+  "firmware_banner": "11.0.0-alpha.1-37-g7d715c1a20-dirty; built 2026-10-06",
+  "firmware_changed_for_scope_tests": false,
+  "instrument": {
+    "model": "Siglent SDS812X HD",
+    "firmware": "3.8.12.1.1.6.5"
+  },
+  "wiring": {
+    "CH1": "P3.04",
+    "CH2": "P3.05",
+    "grounds": "DK GND",
+    "physical_probe_attenuation": 10
+  },
+  "probe_compensation": "User confirmed both probes compensated on this scope before accepted captures",
+  "calibration": "No traceable scope timebase/probe calibration or absolute jitter/voltage qualification",
+  "io_voltage_configuration": "Not independently verified; observed ~3 V high must not be interpreted as confirmation of the default 1.8 V IO setting",
+  "gates": {
+    "frequency_fraction": 0.005,
+    "pulse_seconds": "max(5 ns, two actual sample intervals, 0.005 * expected period)",
+    "minimum_samples_per_shortest_pulse": 20,
+    "threshold_sensitivity": "Mean high widths at 40% and 60% of measured levels must stay within the pulse gate of the 50% result",
+    "four_mhz_duty_precision_note": "The +/-5 ns functional gate corresponds to +/-2 percentage points of duty at 4 MHz, not 0.5% duty precision",
+    "not_a_calibration_uncertainty_budget": true
+  },
+  "captures": [
+    {
+      "id": "compensated-baseline",
+      "points": 100000,
+      "acquisition": {
+        "channel_settings": [
+          {
+            "ch": 1,
+            "enabled": true,
+            "scale": 1.0,
+            "offset": -1.5,
+            "probe": 10.0,
+            "coupling": "DC",
+            "impedance": "1M"
+          },
+          {
+            "ch": 2,
+            "enabled": true,
+            "scale": 1.0,
+            "offset": -1.5,
+            "probe": 10.0,
+            "coupling": "DC",
+            "impedance": "1M"
+          }
+        ],
+        "timebase": {
+          "scale": 0.002,
+          "delay": 0.0
+        },
+        "memory_depth_points": 100000.0,
+        "readback_sample_rate_hz": 5000000.0,
+        "trigger": {
+          "source": "C1",
+          "level": 1.5,
+          "slope": "rising",
+          "coupling": "dc",
+          "noise_reject": false,
+          "holdoff": "off",
+          "holdoff_time": 8e-09,
+          "holdoff_start": "acquisition_start"
+        },
+        "trigger_parameters_verified": true
+      },
+      "raw_csv": "compensated-baseline.csv",
+      "raw_csv_sha256": "ffdce66f6b6dbaf915b11f8588093199b9965b542ced5a11d561ab271d86db70",
+      "channels": [
+        {
+          "channel": 1,
+          "requested_frequency_hz": 500,
+          "requested_duty_u16": 32768,
+          "expected": {
+            "top": 32000,
+            "prescaler": 0,
+            "period_s": 0.002,
+            "high_s": 0.001,
+            "fraction": 0.5
+          },
+          "low_v": -0.179166632083555,
+          "high_v": 3.2270834186735255,
+          "min_v": -0.48333330328265833,
+          "max_v": 3.520833423050741,
+          "sample_rate_hz": 4999999.941569514,
+          "sample_interval_s": 2.0000000233721948e-07,
+          "frequency_tolerance_fraction": 0.005,
+          "pulse_tolerance_s": 1e-05,
+          "accuracy_note": "Functional engineering gates only; timebase and probes are not traceably calibrated.",
+          "threshold_v": 1.5239583932949854,
+          "complete_cycles": 9,
+          "measured_frequency_hz": 500.0110902420851,
+          "mean_period_s": 0.0019999556400155855,
+          "mean_high_s": 0.000999971672096975,
+          "measured_duty_percent": 49.9996925740089,
+          "period_min_s": 0.0019998026706437855,
+          "period_max_s": 0.0020000016604100083,
+          "high_min_s": 0.000999806001148306,
+          "high_max_s": 0.0010000016177591675,
+          "frequency_check": "pass",
+          "shortest_pulse_samples": 4999.999941569514,
+          "threshold_40_60_width_s": [
+            0.0010000123959833652,
+            0.000999930948210584
+          ],
+          "pulse_check": "pass",
+          "status": "pass",
+          "periods_outside_gate": 0,
+          "pulses_outside_gate": 0
+        },
+        {
+          "channel": 2,
+          "requested_frequency_hz": 1000,
+          "requested_duty_u16": 16384,
+          "expected": {
+            "top": 16000,
+            "prescaler": 0,
+            "period_s": 0.001,
+            "high_s": 0.00025,
+            "fraction": 0.25
+          },
+          "low_v": -0.16874996526166797,
+          "high_v": 3.2437500855885446,
+          "min_v": -0.3229166342255969,
+          "max_v": 3.4041667546456056,
+          "sample_rate_hz": 4999999.941569514,
+          "sample_interval_s": 2.0000000233721948e-07,
+          "frequency_tolerance_fraction": 0.005,
+          "pulse_tolerance_s": 5e-06,
+          "accuracy_note": "Functional engineering gates only; timebase and probes are not traceably calibrated.",
+          "threshold_v": 1.5375000601634383,
+          "complete_cycles": 19,
+          "measured_frequency_hz": 1000.0104919335596,
+          "mean_period_s": 0.00099998950817652,
+          "mean_high_s": 0.0002499947422076021,
+          "measured_duty_percent": 24.99973648488325,
+          "period_min_s": 0.000999897518614294,
+          "period_max_s": 0.001000001313208489,
+          "high_min_s": 0.0002498958859273059,
+          "high_max_s": 0.0002500021072854852,
+          "frequency_check": "pass",
+          "shortest_pulse_samples": 1249.9999853923784,
+          "threshold_40_60_width_s": [
+            0.0002500366676437072,
+            0.00024995321005450897
+          ],
+          "pulse_check": "pass",
+          "status": "pass",
+          "periods_outside_gate": 0,
+          "pulses_outside_gate": 0
+        }
+      ]
+    },
+    {
+      "id": "4mhz-d16384",
+      "points": 10000,
+      "acquisition": {
+        "channel_settings": [
+          {
+            "ch": 1,
+            "enabled": true,
+            "scale": 1.0,
+            "offset": -1.5,
+            "probe": 10.0,
+            "coupling": "DC",
+            "impedance": "1M"
+          },
+          {
+            "ch": 2,
+            "enabled": true,
+            "scale": 1.0,
+            "offset": -1.5,
+            "probe": 10.0,
+            "coupling": "DC",
+            "impedance": "1M"
+          }
+        ],
+        "timebase": {
+          "scale": 1e-06,
+          "delay": 0.0
+        },
+        "memory_depth_points": 100000.0,
+        "readback_sample_rate_hz": 1000000000.0,
+        "trigger": {
+          "source": "C1",
+          "level": 1.5,
+          "slope": "rising",
+          "coupling": "dc",
+          "noise_reject": false,
+          "holdoff": "off",
+          "holdoff_time": 8e-09,
+          "holdoff_start": "acquisition_start"
+        },
+        "trigger_parameters_verified": true
+      },
+      "raw_csv": "4mhz-d16384.csv",
+      "raw_csv_sha256": "ae1d7d0128bcbc3d41279ce24f832932a18cada74db833b76dbf8ae0691d04fa",
+      "channels": [
+        {
+          "channel": 1,
+          "requested_frequency_hz": 4000000,
+          "requested_duty_u16": 16384,
+          "expected": {
+            "top": 4,
+            "prescaler": 0,
+            "period_s": 2.5e-07,
+            "high_s": 6.25e-08,
+            "fraction": 0.25
+          },
+          "low_v": -0.12708329797411966,
+          "high_v": 3.400000087916851,
+          "min_v": -0.18958329890544223,
+          "max_v": 3.4312500883825123,
+          "sample_rate_hz": 1000000028.2819322,
+          "sample_interval_s": 9.999999717180685e-10,
+          "frequency_tolerance_fraction": 0.005,
+          "pulse_tolerance_s": 5e-09,
+          "accuracy_note": "Functional engineering gates only; timebase and probes are not traceably calibrated.",
+          "threshold_v": 1.6364583949713656,
+          "complete_cycles": 38,
+          "measured_frequency_hz": 4000096.0823797174,
+          "mean_period_s": 2.4999399499551143e-07,
+          "mean_high_s": 5.970418999361327e-08,
+          "measured_duty_percent": 23.882202849105642,
+          "period_min_s": 2.4932187849425245e-07,
+          "period_max_s": 2.505381751027295e-07,
+          "high_min_s": 5.9461881916186965e-08,
+          "high_max_s": 5.997820343190557e-08,
+          "frequency_check": "pass",
+          "shortest_pulse_samples": 62.50000176762076,
+          "threshold_40_60_width_s": [
+            6.197167656359454e-08,
+            5.730922744610174e-08
+          ],
+          "pulse_check": "pass",
+          "status": "pass",
+          "periods_outside_gate": 0,
+          "pulses_outside_gate": 0
+        },
+        {
+          "channel": 2,
+          "requested_frequency_hz": 2000000,
+          "requested_duty_u16": 32768,
+          "expected": {
+            "top": 8,
+            "prescaler": 0,
+            "period_s": 5e-07,
+            "high_s": 2.5e-07,
+            "fraction": 0.5
+          },
+          "low_v": -0.18124996544793248,
+          "high_v": 3.241666752224167,
+          "min_v": -0.2395832996505003,
+          "max_v": 3.297916753062357,
+          "sample_rate_hz": 1000000028.2819322,
+          "sample_interval_s": 9.999999717180685e-10,
+          "frequency_tolerance_fraction": 0.005,
+          "pulse_tolerance_s": 5e-09,
+          "accuracy_note": "Functional engineering gates only; timebase and probes are not traceably calibrated.",
+          "threshold_v": 1.5302083933881172,
+          "complete_cycles": 19,
+          "measured_frequency_hz": 2000007.970532093,
+          "mean_period_s": 4.999980073749179e-07,
+          "mean_high_s": 2.474350354845337e-07,
+          "measured_duty_percent": 49.487206131847,
+          "period_min_s": 4.99717382490467e-07,
+          "period_max_s": 5.00364803931801e-07,
+          "high_min_s": 2.472328414273178e-07,
+          "high_max_s": 2.4768437653325875e-07,
+          "frequency_check": "pass",
+          "shortest_pulse_samples": 250.00000707048304,
+          "threshold_40_60_width_s": [
+            2.495345901500328e-07,
+            2.4515558476561304e-07
+          ],
+          "pulse_check": "pass",
+          "status": "pass",
+          "periods_outside_gate": 0,
+          "pulses_outside_gate": 0
+        }
+      ]
+    },
+    {
+      "id": "4mhz-d32768",
+      "points": 10000,
+      "acquisition": {
+        "channel_settings": [
+          {
+            "ch": 1,
+            "enabled": true,
+            "scale": 1.0,
+            "offset": -1.5,
+            "probe": 10.0,
+            "coupling": "DC",
+            "impedance": "1M"
+          },
+          {
+            "ch": 2,
+            "enabled": true,
+            "scale": 1.0,
+            "offset": -1.5,
+            "probe": 10.0,
+            "coupling": "DC",
+            "impedance": "1M"
+          }
+        ],
+        "timebase": {
+          "scale": 1e-06,
+          "delay": 0.0
+        },
+        "memory_depth_points": 100000.0,
+        "readback_sample_rate_hz": 1000000000.0,
+        "trigger": {
+          "source": "C1",
+          "level": 1.5,
+          "slope": "rising",
+          "coupling": "dc",
+          "noise_reject": false,
+          "holdoff": "off",
+          "holdoff_time": 8e-09,
+          "holdoff_start": "acquisition_start"
+        },
+        "trigger_parameters_verified": true
+      },
+      "raw_csv": "4mhz-d32768.csv",
+      "raw_csv_sha256": "483fb6578de7115ba1eac1ad44b9ee6563891c6864d84270482866f561f4826e",
+      "channels": [
+        {
+          "channel": 1,
+          "requested_frequency_hz": 4000000,
+          "requested_duty_u16": 32768,
+          "expected": {
+            "top": 4,
+            "prescaler": 0,
+            "period_s": 2.5e-07,
+            "high_s": 1.25e-07,
+            "fraction": 0.5
+          },
+          "low_v": -0.2374999662861228,
+          "high_v": 3.3020834197911126,
+          "min_v": -0.3083333006749551,
+          "max_v": 3.3291667535280185,
+          "sample_rate_hz": 1000000028.2819322,
+          "sample_interval_s": 9.999999717180685e-10,
+          "frequency_tolerance_fraction": 0.005,
+          "pulse_tolerance_s": 5e-09,
+          "accuracy_note": "Functional engineering gates only; timebase and probes are not traceably calibrated.",
+          "threshold_v": 1.532291726752495,
+          "complete_cycles": 38,
+          "measured_frequency_hz": 4000036.7267362117,
+          "mean_period_s": 2.499977046000624e-07,
+          "mean_high_s": 1.2213296174780194e-07,
+          "measured_duty_percent": 48.85364720566563,
+          "period_min_s": 2.493013705463845e-07,
+          "period_max_s": 2.506420150988363e-07,
+          "high_min_s": 1.2176851507466963e-07,
+          "high_max_s": 1.2245275819898544e-07,
+          "frequency_check": "pass",
+          "shortest_pulse_samples": 125.00000353524152,
+          "threshold_40_60_width_s": [
+            1.2442548119587672e-07,
+            1.1970284494873298e-07
+          ],
+          "pulse_check": "pass",
+          "status": "pass",
+          "periods_outside_gate": 0,
+          "pulses_outside_gate": 0
+        },
+        {
+          "channel": 2,
+          "requested_frequency_hz": 2000000,
+          "requested_duty_u16": 32768,
+          "expected": {
+            "top": 8,
+            "prescaler": 0,
+            "period_s": 5e-07,
+            "high_s": 2.5e-07,
+            "fraction": 0.5
+          },
+          "low_v": -0.18333329881230997,
+          "high_v": 3.241666752224167,
+          "min_v": -0.23124996619299054,
+          "max_v": 3.2854167528760927,
+          "sample_rate_hz": 1000000028.2819322,
+          "sample_interval_s": 9.999999717180685e-10,
+          "frequency_tolerance_fraction": 0.005,
+          "pulse_tolerance_s": 5e-09,
+          "accuracy_note": "Functional engineering gates only; timebase and probes are not traceably calibrated.",
+          "threshold_v": 1.5291667267059283,
+          "complete_cycles": 19,
+          "measured_frequency_hz": 1999997.6635139908,
+          "mean_period_s": 5.000005841221847e-07,
+          "mean_high_s": 2.474577764986312e-07,
+          "measured_duty_percent": 49.4914995275592,
+          "period_min_s": 4.997827253933445e-07,
+          "period_max_s": 5.002473843482777e-07,
+          "high_min_s": 2.472134317435044e-07,
+          "high_max_s": 2.4772144374434687e-07,
+          "frequency_check": "pass",
+          "shortest_pulse_samples": 250.00000707048304,
+          "threshold_40_60_width_s": [
+            2.495679490399474e-07,
+            2.4517092455316866e-07
+          ],
+          "pulse_check": "pass",
+          "status": "pass",
+          "periods_outside_gate": 0,
+          "pulses_outside_gate": 0
+        }
+      ]
+    },
+    {
+      "id": "4mhz-d49152",
+      "points": 10000,
+      "acquisition": {
+        "channel_settings": [
+          {
+            "ch": 1,
+            "enabled": true,
+            "scale": 1.0,
+            "offset": -1.5,
+            "probe": 10.0,
+            "coupling": "DC",
+            "impedance": "1M"
+          },
+          {
+            "ch": 2,
+            "enabled": true,
+            "scale": 1.0,
+            "offset": -1.5,
+            "probe": 10.0,
+            "coupling": "DC",
+            "impedance": "1M"
+          }
+        ],
+        "timebase": {
+          "scale": 1e-06,
+          "delay": 0.0
+        },
+        "memory_depth_points": 100000.0,
+        "readback_sample_rate_hz": 1000000000.0,
+        "trigger": {
+          "source": "C1",
+          "level": 1.5,
+          "slope": "rising",
+          "coupling": "dc",
+          "noise_reject": false,
+          "holdoff": "off",
+          "holdoff_time": 8e-09,
+          "holdoff_start": "acquisition_start"
+        },
+        "trigger_parameters_verified": true
+      },
+      "raw_csv": "4mhz-d49152.csv",
+      "raw_csv_sha256": "e31e4108d307d8bbe21cc76c078dd1b9bfe9d81cf5d7dcfba495a8e5d673c957",
+      "channels": [
+        {
+          "channel": 1,
+          "requested_frequency_hz": 4000000,
+          "requested_duty_u16": 49152,
+          "expected": {
+            "top": 4,
+            "prescaler": 0,
+            "period_s": 2.5e-07,
+            "high_s": 1.875e-07,
+            "fraction": 0.75
+          },
+          "low_v": -0.3520833013268809,
+          "high_v": 3.189583418114732,
+          "min_v": -0.4291666358088453,
+          "max_v": 3.2208334185803933,
+          "sample_rate_hz": 1000000028.2819322,
+          "sample_interval_s": 9.999999717180685e-10,
+          "frequency_tolerance_fraction": 0.005,
+          "pulse_tolerance_s": 5e-09,
+          "accuracy_note": "Functional engineering gates only; timebase and probes are not traceably calibrated.",
+          "threshold_v": 1.4187500583939254,
+          "complete_cycles": 39,
+          "measured_frequency_hz": 4000175.5884488416,
+          "mean_period_s": 2.4998902620366536e-07,
+          "mean_high_s": 1.8457630759844937e-07,
+          "measured_duty_percent": 73.83380187560238,
+          "period_min_s": 2.494161766608939e-07,
+          "period_max_s": 2.505331078553312e-07,
+          "high_min_s": 1.8417361548086947e-07,
+          "high_max_s": 1.8495771834627402e-07,
+          "frequency_check": "pass",
+          "shortest_pulse_samples": 62.50000176762075,
+          "threshold_40_60_width_s": [
+            1.8686657339967195e-07,
+            1.8214739104141185e-07
+          ],
+          "pulse_check": "pass",
+          "status": "pass",
+          "periods_outside_gate": 0,
+          "pulses_outside_gate": 0
+        },
+        {
+          "channel": 2,
+          "requested_frequency_hz": 2000000,
+          "requested_duty_u16": 32768,
+          "expected": {
+            "top": 8,
+            "prescaler": 0,
+            "period_s": 5e-07,
+            "high_s": 2.5e-07,
+            "fraction": 0.5
+          },
+          "low_v": -0.18541663217668725,
+          "high_v": 3.241666752224167,
+          "min_v": -0.24583329974363255,
+          "max_v": 3.300000086426735,
+          "sample_rate_hz": 1000000028.2819322,
+          "sample_interval_s": 9.999999717180685e-10,
+          "frequency_tolerance_fraction": 0.005,
+          "pulse_tolerance_s": 5e-09,
+          "accuracy_note": "Functional engineering gates only; timebase and probes are not traceably calibrated.",
+          "threshold_v": 1.52812506002374,
+          "complete_cycles": 19,
+          "measured_frequency_hz": 1999999.7232454577,
+          "mean_period_s": 5.000000691886452e-07,
+          "mean_high_s": 2.4736473828354274e-07,
+          "measured_duty_percent": 49.47294058363516,
+          "period_min_s": 4.996965615863486e-07,
+          "period_max_s": 5.001615243160041e-07,
+          "high_min_s": 2.4719800130108653e-07,
+          "high_max_s": 2.4770005113409876e-07,
+          "frequency_check": "pass",
+          "shortest_pulse_samples": 250.00000707048304,
+          "threshold_40_60_width_s": [
+            2.494479607303305e-07,
+            2.4514962582155304e-07
+          ],
+          "pulse_check": "pass",
+          "status": "pass",
+          "periods_outside_gate": 0,
+          "pulses_outside_gate": 0
+        }
+      ]
+    },
+    {
+      "id": "independent-p-change",
+      "points": 100000,
+      "acquisition": {
+        "channel_settings": [
+          {
+            "ch": 1,
+            "enabled": true,
+            "scale": 1.0,
+            "offset": -1.5,
+            "probe": 10.0,
+            "coupling": "DC",
+            "impedance": "1M"
+          },
+          {
+            "ch": 2,
+            "enabled": true,
+            "scale": 1.0,
+            "offset": -1.5,
+            "probe": 10.0,
+            "coupling": "DC",
+            "impedance": "1M"
+          }
+        ],
+        "timebase": {
+          "scale": 0.002,
+          "delay": 0.0
+        },
+        "memory_depth_points": 100000.0,
+        "readback_sample_rate_hz": 5000000.0,
+        "trigger": {
+          "source": "C1",
+          "level": 1.5,
+          "slope": "rising",
+          "coupling": "dc",
+          "noise_reject": false,
+          "holdoff": "off",
+          "holdoff_time": 8e-09,
+          "holdoff_start": "acquisition_start"
+        },
+        "trigger_parameters_verified": true
+      },
+      "raw_csv": "independent-p-change.csv",
+      "raw_csv_sha256": "dd6fb4eb617e1bb3289e166e387ffb10893a29e7c087d0bf14143ab7587b0928",
+      "channels": [
+        {
+          "channel": 1,
+          "requested_frequency_hz": 1234,
+          "requested_duty_u16": 49152,
+          "expected": {
+            "top": 12966,
+            "prescaler": 0,
+            "period_s": 0.000810375,
+            "high_s": 0.0006078125,
+            "fraction": 0.7500385623939534
+          },
+          "low_v": -0.2937499671243131,
+          "high_v": 3.2854167528760927,
+          "min_v": -0.4895833033757906,
+          "max_v": 3.441666755204399,
+          "sample_rate_hz": 4999999.941569514,
+          "sample_interval_s": 2.0000000233721948e-07,
+          "frequency_tolerance_fraction": 0.005,
+          "pulse_tolerance_s": 4.051875e-06,
+          "accuracy_note": "Functional engineering gates only; timebase and probes are not traceably calibrated.",
+          "threshold_v": 1.4958333928758898,
+          "complete_cycles": 24,
+          "measured_frequency_hz": 1234.0093326910323,
+          "mean_period_s": 0.0008103666427054301,
+          "mean_high_s": 0.0006078005696851146,
+          "measured_duty_percent": 75.00315805345191,
+          "period_min_s": 0.000810202152721329,
+          "period_max_s": 0.0008104008423080204,
+          "high_min_s": 0.0006077869335698524,
+          "high_max_s": 0.0006078602400591887,
+          "frequency_check": "pass",
+          "shortest_pulse_samples": 1012.8124881641749,
+          "threshold_40_60_width_s": [
+            0.0006078430963361102,
+            0.0006077582985318147
+          ],
+          "pulse_check": "pass",
+          "status": "pass",
+          "periods_outside_gate": 0,
+          "pulses_outside_gate": 0
+        },
+        {
+          "channel": 2,
+          "requested_frequency_hz": 1000,
+          "requested_duty_u16": 16384,
+          "expected": {
+            "top": 16000,
+            "prescaler": 0,
+            "period_s": 0.001,
+            "high_s": 0.00025,
+            "fraction": 0.25
+          },
+          "low_v": -0.17083329862604546,
+          "high_v": 3.2437500855885446,
+          "min_v": -0.3374999677762389,
+          "max_v": 3.4020834212812288,
+          "sample_rate_hz": 4999999.941569514,
+          "sample_interval_s": 2.0000000233721948e-07,
+          "frequency_tolerance_fraction": 0.005,
+          "pulse_tolerance_s": 5e-06,
+          "accuracy_note": "Functional engineering gates only; timebase and probes are not traceably calibrated.",
+          "threshold_v": 1.5364583934812495,
+          "complete_cycles": 19,
+          "measured_frequency_hz": 1000.0210123254919,
+          "mean_period_s": 0.0009999789881160166,
+          "mean_high_s": 0.00024999020721554535,
+          "measured_duty_percent": 24.999545960342914,
+          "period_min_s": 0.0009998254431544664,
+          "period_max_s": 0.0010000009218474248,
+          "high_min_s": 0.0002498967297001383,
+          "high_max_s": 0.0002500024876090812,
+          "frequency_check": "pass",
+          "shortest_pulse_samples": 1249.9999853923784,
+          "threshold_40_60_width_s": [
+            0.0002500327557174205,
+            0.00024994770837903277
+          ],
+          "pulse_check": "pass",
+          "status": "pass",
+          "periods_outside_gate": 0,
+          "pulses_outside_gate": 0
+        }
+      ]
+    },
+    {
+      "id": "independent-q-change",
+      "points": 100000,
+      "acquisition": {
+        "channel_settings": [
+          {
+            "ch": 1,
+            "enabled": true,
+            "scale": 1.0,
+            "offset": -1.5,
+            "probe": 10.0,
+            "coupling": "DC",
+            "impedance": "1M"
+          },
+          {
+            "ch": 2,
+            "enabled": true,
+            "scale": 1.0,
+            "offset": -1.5,
+            "probe": 10.0,
+            "coupling": "DC",
+            "impedance": "1M"
+          }
+        ],
+        "timebase": {
+          "scale": 0.002,
+          "delay": 0.0
+        },
+        "memory_depth_points": 100000.0,
+        "readback_sample_rate_hz": 5000000.0,
+        "trigger": {
+          "source": "C1",
+          "level": 1.5,
+          "slope": "rising",
+          "coupling": "dc",
+          "noise_reject": false,
+          "holdoff": "off",
+          "holdoff_time": 8e-09,
+          "holdoff_start": "acquisition_start"
+        },
+        "trigger_parameters_verified": true
+      },
+      "raw_csv": "independent-q-change.csv",
+      "raw_csv_sha256": "b2b24c5a0c639cdf7850f8e66d051b963f7b9440700d6ccecb7b9cc5af1239f8",
+      "channels": [
+        {
+          "channel": 1,
+          "requested_frequency_hz": 1234,
+          "requested_duty_u16": 49152,
+          "expected": {
+            "top": 12966,
+            "prescaler": 0,
+            "period_s": 0.000810375,
+            "high_s": 0.0006078125,
+            "fraction": 0.7500385623939534
+          },
+          "low_v": -0.2937499671243131,
+          "high_v": 3.2854167528760927,
+          "min_v": -0.47916663655390335,
+          "max_v": 3.443750088568777,
+          "sample_rate_hz": 4999999.941569514,
+          "sample_interval_s": 2.0000000233721948e-07,
+          "frequency_tolerance_fraction": 0.005,
+          "pulse_tolerance_s": 4.051875e-06,
+          "accuracy_note": "Functional engineering gates only; timebase and probes are not traceably calibrated.",
+          "threshold_v": 1.4958333928758898,
+          "complete_cycles": 24,
+          "measured_frequency_hz": 1234.0197049033723,
+          "mean_period_s": 0.0008103598313920791,
+          "mean_high_s": 0.0006077997059971539,
+          "measured_duty_percent": 75.00368202740718,
+          "period_min_s": 0.0008102009269168667,
+          "period_max_s": 0.0008104006201480494,
+          "high_min_s": 0.0006077897549072721,
+          "high_max_s": 0.0006078360363502887,
+          "frequency_check": "pass",
+          "shortest_pulse_samples": 1012.8124881641749,
+          "threshold_40_60_width_s": [
+            0.0006078411176283874,
+            0.0006077582943659205
+          ],
+          "pulse_check": "pass",
+          "status": "pass",
+          "periods_outside_gate": 0,
+          "pulses_outside_gate": 0
+        },
+        {
+          "channel": 2,
+          "requested_frequency_hz": 700,
+          "requested_duty_u16": 49152,
+          "expected": {
+            "top": 22857,
+            "prescaler": 0,
+            "period_s": 0.0014285625,
+            "high_s": 0.0010714375,
+            "fraction": 0.7500109375683598
+          },
+          "low_v": -0.1645832985329132,
+          "high_v": 3.206250085029751,
+          "min_v": -0.34583330123374867,
+          "max_v": 3.3812500876374543,
+          "sample_rate_hz": 4999999.941569514,
+          "sample_interval_s": 2.0000000233721948e-07,
+          "frequency_tolerance_fraction": 0.005,
+          "pulse_tolerance_s": 7.1428125e-06,
+          "accuracy_note": "Functional engineering gates only; timebase and probes are not traceably calibrated.",
+          "threshold_v": 1.5208333932484188,
+          "complete_cycles": 13,
+          "measured_frequency_hz": 700.0161478116308,
+          "mean_period_s": 0.0014285384746140065,
+          "mean_high_s": 0.0010714286532864147,
+          "measured_duty_percent": 75.00173606973729,
+          "period_min_s": 0.0014283992982884752,
+          "period_max_s": 0.0014286016123108442,
+          "high_min_s": 0.0010713986303081948,
+          "high_max_s": 0.001071591011278638,
+          "frequency_check": "pass",
+          "shortest_pulse_samples": 1785.6249791330126,
+          "threshold_40_60_width_s": [
+            0.0010714691565150646,
+            0.0010713881500577652
+          ],
+          "pulse_check": "pass",
+          "status": "pass",
+          "periods_outside_gate": 0,
+          "pulses_outside_gate": 0
+        }
+      ]
+    },
+    {
+      "id": "duty-transition",
+      "points": 100000,
+      "acquisition": {
+        "channel_settings": [
+          {
+            "ch": 1,
+            "enabled": true,
+            "scale": 1.0,
+            "offset": -1.5,
+            "probe": 10.0,
+            "coupling": "DC",
+            "impedance": "1M"
+          },
+          {
+            "ch": 2,
+            "enabled": true,
+            "scale": 1.0,
+            "offset": -1.5,
+            "probe": 10.0,
+            "coupling": "DC",
+            "impedance": "1M"
+          }
+        ],
+        "timebase": {
+          "scale": 0.001,
+          "delay": 0.0
+        },
+        "memory_depth_points": 100000.0,
+        "readback_sample_rate_hz": 10000000.0,
+        "trigger": {
+          "source": "C2",
+          "level": 1.5,
+          "slope": "rising",
+          "coupling": "dc",
+          "noise_reject": false,
+          "holdoff": "off",
+          "holdoff_time": 8e-09,
+          "holdoff_start": "acquisition_start"
+        },
+        "trigger_parameters_verified": true
+      },
+      "raw_csv": "duty-transition.csv",
+      "raw_csv_sha256": "ff1e21b676dd7fa126641a36cce9c7f220f908a36d6e28726b5216be2f75cb00",
+      "channels": [],
+      "event": {
+        "attribute": "duty_cycle",
+        "value": 49152,
+        "marker_start_s": 1.3215812775504419e-07,
+        "marker_end_s": 8.659340833724565e-05,
+        "marker_width_s": 8.64612502094906e-05,
+        "sample_interval_s": 1.0000000116860974e-07,
+        "rising_edges_s": [
+          -0.004112756790112633,
+          -0.003112757379759917,
+          -0.0021128437362307475,
+          -0.0011128563446428203,
+          -0.00011285702521455891,
+          0.0008871428323457517,
+          0.0018871441754376285,
+          0.00288714470294667,
+          0.0038871446203637837,
+          0.004887122384447033
+        ],
+        "falling_edges_s": [
+          -0.004862754457933725,
+          -0.0038627541533749984,
+          -0.0028627709650449616,
+          -0.0018628525329966608,
+          -0.0008628543511755883,
+          0.00013714599957252453,
+          0.001637144462271313,
+          0.0026371442103902518,
+          0.003637144032256507,
+          0.004637136229390953
+        ],
+        "status": "observed",
+        "note": "CH2 encloses Python setter plus marker/timer overhead; no latency guarantee.",
+        "software_timing": {
+          "value": 49152,
+          "attribute": "duty_cycle",
+          "elapsed_ns": 30518
+        }
+      }
+    },
+    {
+      "id": "frequency-transition",
+      "points": 100000,
+      "acquisition": {
+        "channel_settings": [
+          {
+            "ch": 1,
+            "enabled": true,
+            "scale": 1.0,
+            "offset": -1.5,
+            "probe": 10.0,
+            "coupling": "DC",
+            "impedance": "1M"
+          },
+          {
+            "ch": 2,
+            "enabled": true,
+            "scale": 1.0,
+            "offset": -1.5,
+            "probe": 10.0,
+            "coupling": "DC",
+            "impedance": "1M"
+          }
+        ],
+        "timebase": {
+          "scale": 0.001,
+          "delay": 0.0
+        },
+        "memory_depth_points": 100000.0,
+        "readback_sample_rate_hz": 10000000.0,
+        "trigger": {
+          "source": "C2",
+          "level": 1.5,
+          "slope": "rising",
+          "coupling": "dc",
+          "noise_reject": false,
+          "holdoff": "off",
+          "holdoff_time": 8e-09,
+          "holdoff_start": "acquisition_start"
+        },
+        "trigger_parameters_verified": true
+      },
+      "raw_csv": "frequency-transition.csv",
+      "raw_csv_sha256": "e2fa6825d819d08040a8d8d4bc2e0839564c72fa94fda5d664d286a2467e0bfe",
+      "channels": [],
+      "event": {
+        "attribute": "frequency",
+        "value": 2000,
+        "marker_start_s": 4.463302850420115e-08,
+        "marker_end_s": 9.815116928127041e-05,
+        "marker_width_s": 9.810653625276622e-05,
+        "sample_interval_s": 1.0000000116860974e-07,
+        "rising_edges_s": [
+          -0.004608155040198689,
+          -0.003608155287669726,
+          -0.0026081560290575037,
+          -0.0016081553185643856,
+          -0.0006081558910551507,
+          0.0003918388757930754,
+          0.0008917825139900199,
+          0.0013917574060709004,
+          0.0018917506860170437,
+          0.0023917478192220683,
+          0.002891747066458079,
+          0.003391747181648938,
+          0.0038917469640976986,
+          0.004391746740639651,
+          0.00489174662446996
+        ],
+        "falling_edges_s": [
+          -0.004858155494478541,
+          -0.0038581557923418066,
+          -0.0028581554642286328,
+          -0.0018581557676430533,
+          -0.0008581556063582054,
+          0.00014184397130756148,
+          0.0007667646489656649,
+          0.0012667454009054353,
+          0.0017667454500166744,
+          0.0022667450047076853,
+          0.002766744620628611,
+          0.0032667451416527513,
+          0.0037667445010356217,
+          0.004266745105297993,
+          0.004766745108177363
+        ],
+        "status": "observed",
+        "note": "CH2 encloses Python setter plus marker/timer overhead; no latency guarantee.",
+        "software_timing": {
+          "value": 2000,
+          "attribute": "frequency",
+          "elapsed_ns": 30518
+        }
+      }
+    },
+    {
+      "id": "stop-4hz-0",
+      "points": 100000,
+      "acquisition": {
+        "channel_settings": [
+          {
+            "ch": 1,
+            "enabled": true,
+            "scale": 1.0,
+            "offset": -1.5,
+            "probe": 10.0,
+            "coupling": "DC",
+            "impedance": "1M"
+          },
+          {
+            "ch": 2,
+            "enabled": true,
+            "scale": 1.0,
+            "offset": -1.5,
+            "probe": 10.0,
+            "coupling": "DC",
+            "impedance": "1M"
+          }
+        ],
+        "timebase": {
+          "scale": 0.1,
+          "delay": 0.0
+        },
+        "memory_depth_points": 100000.0,
+        "readback_sample_rate_hz": 100000.0,
+        "trigger": {
+          "source": "C2",
+          "level": 1.5,
+          "slope": "rising",
+          "coupling": "dc",
+          "noise_reject": false,
+          "holdoff": "off",
+          "holdoff_time": 8e-09,
+          "holdoff_start": "acquisition_start"
+        },
+        "trigger_parameters_verified": true
+      },
+      "raw_csv": "stop-4hz-0.csv",
+      "raw_csv_sha256": "5bdf0c4ddc8c7a9dcf5aba441a8bd68543b766d3198ceeecdc4adaca4bb6299f",
+      "channels": [],
+      "event": {
+        "attribute": "duty_cycle",
+        "value": 0,
+        "marker_start_s": 4.430430252781619e-06,
+        "marker_end_s": 9.506811205495831e-05,
+        "marker_width_s": 9.06376818021767e-05,
+        "sample_interval_s": 9.999999747378752e-06,
+        "rising_edges_s": [
+          -0.3711756872739196,
+          -0.12118567724354384
+        ],
+        "falling_edges_s": [
+          -0.49617548220681185,
+          -0.24618550190721736,
+          0.003814482130582658
+        ],
+        "status": "observed",
+        "note": "CH2 encloses Python setter plus marker/timer overhead; no latency guarantee.",
+        "software_timing": {
+          "value": 0,
+          "attribute": "duty_cycle",
+          "elapsed_ns": 61036
+        },
+        "output_low_delay_s": 0.0038100517003298766,
+        "low_after_10ms_observation": true,
+        "low_after_one_period_observation": true
+      }
+    },
+    {
+      "id": "restart-4hz-0",
+      "points": 100000,
+      "acquisition": {
+        "channel_settings": [
+          {
+            "ch": 1,
+            "enabled": true,
+            "scale": 1.0,
+            "offset": -1.5,
+            "probe": 10.0,
+            "coupling": "DC",
+            "impedance": "1M"
+          },
+          {
+            "ch": 2,
+            "enabled": true,
+            "scale": 1.0,
+            "offset": -1.5,
+            "probe": 10.0,
+            "coupling": "DC",
+            "impedance": "1M"
+          }
+        ],
+        "timebase": {
+          "scale": 0.1,
+          "delay": 0.0
+        },
+        "memory_depth_points": 100000.0,
+        "readback_sample_rate_hz": 100000.0,
+        "trigger": {
+          "source": "C2",
+          "level": 1.5,
+          "slope": "rising",
+          "coupling": "dc",
+          "noise_reject": false,
+          "holdoff": "off",
+          "holdoff_time": 8e-09,
+          "holdoff_start": "acquisition_start"
+        },
+        "trigger_parameters_verified": true
+      },
+      "raw_csv": "restart-4hz-0.csv",
+      "raw_csv_sha256": "00ed3e78147096b1fd8538184264254c10e5e8852b28c48b1605c9d24ddc9ace",
+      "channels": [],
+      "event": {
+        "attribute": "duty_cycle",
+        "value": 32768,
+        "marker_start_s": 4.584852918230572e-06,
+        "marker_end_s": 9.501873434498179e-05,
+        "marker_width_s": 9.043388142675121e-05,
+        "sample_interval_s": 9.999999747378752e-06,
+        "rising_edges_s": [
+          5.4307987180284424e-05,
+          0.2500442727436885
+        ],
+        "falling_edges_s": [
+          0.1250544252792293,
+          0.3750444322775148
+        ],
+        "status": "observed",
+        "note": "CH2 encloses Python setter plus marker/timer overhead; no latency guarantee.",
+        "software_timing": {
+          "value": 32768,
+          "attribute": "duty_cycle",
+          "elapsed_ns": 91541
+        }
+      }
+    },
+    {
+      "id": "stop-4hz-1",
+      "points": 100000,
+      "acquisition": {
+        "channel_settings": [
+          {
+            "ch": 1,
+            "enabled": true,
+            "scale": 1.0,
+            "offset": -1.5,
+            "probe": 10.0,
+            "coupling": "DC",
+            "impedance": "1M"
+          },
+          {
+            "ch": 2,
+            "enabled": true,
+            "scale": 1.0,
+            "offset": -1.5,
+            "probe": 10.0,
+            "coupling": "DC",
+            "impedance": "1M"
+          }
+        ],
+        "timebase": {
+          "scale": 0.1,
+          "delay": 0.0
+        },
+        "memory_depth_points": 100000.0,
+        "readback_sample_rate_hz": 100000.0,
+        "trigger": {
+          "source": "C2",
+          "level": 1.5,
+          "slope": "rising",
+          "coupling": "dc",
+          "noise_reject": false,
+          "holdoff": "off",
+          "holdoff_time": 8e-09,
+          "holdoff_start": "acquisition_start"
+        },
+        "trigger_parameters_verified": true
+      },
+      "raw_csv": "stop-4hz-1.csv",
+      "raw_csv_sha256": "5e0916fb4ac84d9155c49f8d8069550a858173f5a90f40aa61006e57e345c8ed",
+      "channels": [],
+      "event": {
+        "attribute": "duty_cycle",
+        "value": 0,
+        "marker_start_s": 4.501689940537763e-06,
+        "marker_end_s": 9.505246280764258e-05,
+        "marker_width_s": 9.05507728671048e-05,
+        "sample_interval_s": 9.999999747378752e-06,
+        "rising_edges_s": [
+          -0.3542657378207029,
+          -0.10426565086788045
+        ],
+        "falling_edges_s": [
+          -0.4792654996270336,
+          -0.22926545262229028,
+          0.02073451780791432
+        ],
+        "status": "observed",
+        "note": "CH2 encloses Python setter plus marker/timer overhead; no latency guarantee.",
+        "software_timing": {
+          "value": 0,
+          "attribute": "duty_cycle",
+          "elapsed_ns": 61036
+        },
+        "output_low_delay_s": 0.02073001611797378,
+        "low_after_10ms_observation": false,
+        "low_after_one_period_observation": true
+      }
+    },
+    {
+      "id": "restart-4hz-1",
+      "points": 100000,
+      "acquisition": {
+        "channel_settings": [
+          {
+            "ch": 1,
+            "enabled": true,
+            "scale": 1.0,
+            "offset": -1.5,
+            "probe": 10.0,
+            "coupling": "DC",
+            "impedance": "1M"
+          },
+          {
+            "ch": 2,
+            "enabled": true,
+            "scale": 1.0,
+            "offset": -1.5,
+            "probe": 10.0,
+            "coupling": "DC",
+            "impedance": "1M"
+          }
+        ],
+        "timebase": {
+          "scale": 0.1,
+          "delay": 0.0
+        },
+        "memory_depth_points": 100000.0,
+        "readback_sample_rate_hz": 100000.0,
+        "trigger": {
+          "source": "C2",
+          "level": 1.5,
+          "slope": "rising",
+          "coupling": "dc",
+          "noise_reject": false,
+          "holdoff": "off",
+          "holdoff_time": 8e-09,
+          "holdoff_start": "acquisition_start"
+        },
+        "trigger_parameters_verified": true
+      },
+      "raw_csv": "restart-4hz-1.csv",
+      "raw_csv_sha256": "6966aa843ee67f992be9364bcb299b5f94b4c226c3ce4c1e89e04e473bdfe553",
+      "channels": [],
+      "event": {
+        "attribute": "duty_cycle",
+        "value": 32768,
+        "marker_start_s": 4.516376754484266e-06,
+        "marker_end_s": 9.504978868722802e-05,
+        "marker_width_s": 9.053341193274376e-05,
+        "sample_interval_s": 9.999999747378752e-06,
+        "rising_edges_s": [
+          5.432471679014446e-05,
+          0.2500543342094299
+        ],
+        "falling_edges_s": [
+          0.12505443341437794,
+          0.37504441969991364
+        ],
+        "status": "observed",
+        "note": "CH2 encloses Python setter plus marker/timer overhead; no latency guarantee.",
+        "software_timing": {
+          "value": 32768,
+          "attribute": "duty_cycle",
+          "elapsed_ns": 30518
+        }
+      }
+    },
+    {
+      "id": "stop-4hz-2",
+      "points": 100000,
+      "acquisition": {
+        "channel_settings": [
+          {
+            "ch": 1,
+            "enabled": true,
+            "scale": 1.0,
+            "offset": -1.5,
+            "probe": 10.0,
+            "coupling": "DC",
+            "impedance": "1M"
+          },
+          {
+            "ch": 2,
+            "enabled": true,
+            "scale": 1.0,
+            "offset": -1.5,
+            "probe": 10.0,
+            "coupling": "DC",
+            "impedance": "1M"
+          }
+        ],
+        "timebase": {
+          "scale": 0.1,
+          "delay": 0.0
+        },
+        "memory_depth_points": 100000.0,
+        "readback_sample_rate_hz": 100000.0,
+        "trigger": {
+          "source": "C2",
+          "level": 1.5,
+          "slope": "rising",
+          "coupling": "dc",
+          "noise_reject": false,
+          "holdoff": "off",
+          "holdoff_time": 8e-09,
+          "holdoff_start": "acquisition_start"
+        },
+        "trigger_parameters_verified": true
+      },
+      "raw_csv": "stop-4hz-2.csv",
+      "raw_csv_sha256": "50ef0452291f55131da53df32f24eccefe9aa59f88f50d4ed13166ad1678f716",
+      "channels": [],
+      "event": {
+        "attribute": "duty_cycle",
+        "value": 0,
+        "marker_start_s": 4.544807437578445e-06,
+        "marker_end_s": 8.504292252105961e-05,
+        "marker_width_s": 8.049811508348117e-05,
+        "sample_interval_s": 9.999999747378752e-06,
+        "rising_edges_s": [
+          -0.3879557482851948,
+          -0.13795563489828822
+        ],
+        "falling_edges_s": [
+          -0.2629555689420681,
+          -0.012955539910964703
+        ],
+        "status": "observed",
+        "note": "CH2 encloses Python setter plus marker/timer overhead; no latency guarantee.",
+        "software_timing": {
+          "value": 0,
+          "attribute": "duty_cycle",
+          "elapsed_ns": 61036
+        },
+        "output_low_delay_s": 0.0,
+        "low_after_10ms_observation": true,
+        "low_after_one_period_observation": true
+      }
+    },
+    {
+      "id": "restart-4hz-2",
+      "points": 100000,
+      "acquisition": {
+        "channel_settings": [
+          {
+            "ch": 1,
+            "enabled": true,
+            "scale": 1.0,
+            "offset": -1.5,
+            "probe": 10.0,
+            "coupling": "DC",
+            "impedance": "1M"
+          },
+          {
+            "ch": 2,
+            "enabled": true,
+            "scale": 1.0,
+            "offset": -1.5,
+            "probe": 10.0,
+            "coupling": "DC",
+            "impedance": "1M"
+          }
+        ],
+        "timebase": {
+          "scale": 0.1,
+          "delay": 0.0
+        },
+        "memory_depth_points": 100000.0,
+        "readback_sample_rate_hz": 100000.0,
+        "trigger": {
+          "source": "C2",
+          "level": 1.5,
+          "slope": "rising",
+          "coupling": "dc",
+          "noise_reject": false,
+          "holdoff": "off",
+          "holdoff_time": 8e-09,
+          "holdoff_start": "acquisition_start"
+        },
+        "trigger_parameters_verified": true
+      },
+      "raw_csv": "restart-4hz-2.csv",
+      "raw_csv_sha256": "e19b8ff5db4ef5653a1b4a8ea9247d4b41a9959bd6f15bc619acb24913776d98",
+      "channels": [],
+      "event": {
+        "attribute": "duty_cycle",
+        "value": 32768,
+        "marker_start_s": 4.500477259212585e-06,
+        "marker_end_s": 9.502180629016136e-05,
+        "marker_width_s": 9.052132903094878e-05,
+        "sample_interval_s": 9.999999747378752e-06,
+        "rising_edges_s": [
+          5.433678705995592e-05,
+          0.2500543433439085
+        ],
+        "falling_edges_s": [
+          0.12505450874055538,
+          0.375044477894689
+        ],
+        "status": "observed",
+        "note": "CH2 encloses Python setter plus marker/timer overhead; no latency guarantee.",
+        "software_timing": {
+          "value": 32768,
+          "attribute": "duty_cycle",
+          "elapsed_ns": 61036
+        }
+      }
+    },
+    {
+      "id": "post-transition",
+      "points": 100000,
+      "acquisition": {
+        "channel_settings": [
+          {
+            "ch": 1,
+            "enabled": true,
+            "scale": 1.0,
+            "offset": -1.5,
+            "probe": 10.0,
+            "coupling": "DC",
+            "impedance": "1M"
+          },
+          {
+            "ch": 2,
+            "enabled": true,
+            "scale": 1.0,
+            "offset": -1.5,
+            "probe": 10.0,
+            "coupling": "DC",
+            "impedance": "1M"
+          }
+        ],
+        "timebase": {
+          "scale": 0.002,
+          "delay": 0.0
+        },
+        "memory_depth_points": 100000.0,
+        "readback_sample_rate_hz": 5000000.0,
+        "trigger": {
+          "source": "C1",
+          "level": 1.5,
+          "slope": "rising",
+          "coupling": "dc",
+          "noise_reject": false,
+          "holdoff": "off",
+          "holdoff_time": 8e-09,
+          "holdoff_start": "acquisition_start"
+        },
+        "trigger_parameters_verified": true
+      },
+      "raw_csv": "post-transition.csv",
+      "raw_csv_sha256": "628d3a97d0fdb704c3baa4675403fd8b702f07f616fbd192469e11d3b31903ea",
+      "channels": [
+        {
+          "channel": 1,
+          "requested_frequency_hz": 1000,
+          "requested_duty_u16": 32768,
+          "expected": {
+            "top": 16000,
+            "prescaler": 0,
+            "period_s": 0.001,
+            "high_s": 0.0005,
+            "fraction": 0.5
+          },
+          "low_v": -0.2645833000230293,
+          "high_v": 3.3125000866129994,
+          "min_v": -0.49583330346892285,
+          "max_v": 3.522916756415119,
+          "sample_rate_hz": 4999999.941569514,
+          "sample_interval_s": 2.0000000233721948e-07,
+          "frequency_tolerance_fraction": 0.005,
+          "pulse_tolerance_s": 5e-06,
+          "accuracy_note": "Functional engineering gates only; timebase and probes are not traceably calibrated.",
+          "threshold_v": 1.523958393294985,
+          "complete_cycles": 19,
+          "measured_frequency_hz": 1000.0104843987652,
+          "mean_period_s": 0.0009999895157111562,
+          "mean_high_s": 0.0004999900502256821,
+          "measured_duty_percent": 49.9995291616962,
+          "period_min_s": 0.000999838496948503,
+          "period_max_s": 0.0010000012030370684,
+          "high_min_s": 0.0004998300172248467,
+          "high_max_s": 0.0005000019417444965,
+          "frequency_check": "pass",
+          "shortest_pulse_samples": 2499.999970784757,
+          "periods_outside_gate": 0,
+          "pulses_outside_gate": 0,
+          "threshold_40_60_width_s": [
+            0.000500031553582353,
+            0.0004999485468690114
+          ],
+          "pulse_check": "pass",
+          "status": "pass"
+        },
+        {
+          "channel": 2,
+          "requested_frequency_hz": 2000,
+          "requested_duty_u16": 32768,
+          "expected": {
+            "top": 8000,
+            "prescaler": 0,
+            "period_s": 0.0005,
+            "high_s": 0.00025,
+            "fraction": 0.5
+          },
+          "low_v": -0.21041663254921628,
+          "high_v": 3.258333419139187,
+          "min_v": -0.3416666345049937,
+          "max_v": 3.3687500874511898,
+          "sample_rate_hz": 4999999.941569514,
+          "sample_interval_s": 2.0000000233721948e-07,
+          "frequency_tolerance_fraction": 0.005,
+          "pulse_tolerance_s": 2.5e-06,
+          "accuracy_note": "Functional engineering gates only; timebase and probes are not traceably calibrated.",
+          "threshold_v": 1.5239583932949854,
+          "complete_cycles": 40,
+          "measured_frequency_hz": 2000.0372804950691,
+          "mean_period_s": 0.0004999906800499589,
+          "mean_high_s": 0.0002499910591018114,
+          "measured_duty_percent": 49.999143667900405,
+          "period_min_s": 0.000499885821533529,
+          "period_max_s": 0.0005000019003123595,
+          "high_min_s": 0.0002498680628085989,
+          "high_max_s": 0.00025000197012134233,
+          "frequency_check": "pass",
+          "shortest_pulse_samples": 1249.9999853923784,
+          "periods_outside_gate": 0,
+          "pulses_outside_gate": 0,
+          "threshold_40_60_width_s": [
+            0.00025003381451126294,
+            0.0002499480745088963
+          ],
+          "pulse_check": "pass",
+          "status": "pass"
+        }
+      ]
+    },
+    {
+      "id": "stop-4hz-near-start-0",
+      "points": 100000,
+      "acquisition": {
+        "channel_settings": [
+          {
+            "ch": 1,
+            "enabled": true,
+            "scale": 1.0,
+            "offset": -1.5,
+            "probe": 10.0,
+            "coupling": "DC",
+            "impedance": "1M"
+          },
+          {
+            "ch": 2,
+            "enabled": true,
+            "scale": 1.0,
+            "offset": -1.5,
+            "probe": 10.0,
+            "coupling": "DC",
+            "impedance": "1M"
+          }
+        ],
+        "timebase": {
+          "scale": 0.1,
+          "delay": 0.0
+        },
+        "memory_depth_points": 100000.0,
+        "readback_sample_rate_hz": 100000.0,
+        "trigger": {
+          "source": "C2",
+          "level": 1.5,
+          "slope": "rising",
+          "coupling": "dc",
+          "noise_reject": false,
+          "holdoff": "off",
+          "holdoff_time": 8e-09,
+          "holdoff_start": "acquisition_start"
+        },
+        "trigger_parameters_verified": true
+      },
+      "raw_csv": "stop-4hz-near-start-0.csv",
+      "raw_csv_sha256": "80e8fcd544fc8f89bf6ab2bc111bb47152d180b5defb446e7627298903d61e44",
+      "channels": [],
+      "event": {
+        "attribute": "duty_cycle",
+        "value": 0,
+        "marker_start_s": 4.410325603077256e-06,
+        "marker_end_s": 0.00011502771381919114,
+        "marker_width_s": 0.00011061738821611388,
+        "sample_interval_s": 9.999999747378752e-06,
+        "rising_edges_s": [
+          -0.0010956952382850044
+        ],
+        "falling_edges_s": [
+          0.1239044590416925
+        ],
+        "status": "observed",
+        "note": "CH2 encloses Python setter plus marker/timer overhead; no latency guarantee.",
+        "settled_low_after_one_4hz_period": true,
+        "output_low_delay_s": 0.12390004871608942,
+        "software_timing": {
+          "value": 0,
+          "attribute": "duty_cycle",
+          "elapsed_ns": 122072
+        },
+        "low_after_10ms_observation": false,
+        "low_after_one_period_observation": true
+      }
+    },
+    {
+      "id": "stop-4hz-near-start-1",
+      "points": 100000,
+      "acquisition": {
+        "channel_settings": [
+          {
+            "ch": 1,
+            "enabled": true,
+            "scale": 1.0,
+            "offset": -1.5,
+            "probe": 10.0,
+            "coupling": "DC",
+            "impedance": "1M"
+          },
+          {
+            "ch": 2,
+            "enabled": true,
+            "scale": 1.0,
+            "offset": -1.5,
+            "probe": 10.0,
+            "coupling": "DC",
+            "impedance": "1M"
+          }
+        ],
+        "timebase": {
+          "scale": 0.1,
+          "delay": 0.0
+        },
+        "memory_depth_points": 100000.0,
+        "readback_sample_rate_hz": 100000.0,
+        "trigger": {
+          "source": "C2",
+          "level": 1.5,
+          "slope": "rising",
+          "coupling": "dc",
+          "noise_reject": false,
+          "holdoff": "off",
+          "holdoff_time": 8e-09,
+          "holdoff_start": "acquisition_start"
+        },
+        "trigger_parameters_verified": true
+      },
+      "raw_csv": "stop-4hz-near-start-1.csv",
+      "raw_csv_sha256": "2bb242cf34ac9dd09f7383435683662e74518dce121e11837fdb351b85475556",
+      "channels": [],
+      "event": {
+        "attribute": "duty_cycle",
+        "value": 0,
+        "marker_start_s": 4.545362373470221e-06,
+        "marker_end_s": 9.502786515728132e-05,
+        "marker_width_s": 9.048250278381109e-05,
+        "sample_interval_s": 9.999999747378752e-06,
+        "rising_edges_s": [
+          -0.0010856341592319848
+        ],
+        "falling_edges_s": [
+          0.12391448271901113
+        ],
+        "status": "observed",
+        "note": "CH2 encloses Python setter plus marker/timer overhead; no latency guarantee.",
+        "settled_low_after_one_4hz_period": true,
+        "output_low_delay_s": 0.12390993735663766,
+        "software_timing": {
+          "value": 0,
+          "attribute": "duty_cycle",
+          "elapsed_ns": 61023
+        },
+        "low_after_10ms_observation": false,
+        "low_after_one_period_observation": true
+      }
+    },
+    {
+      "id": "stop-4hz-near-start-2",
+      "points": 100000,
+      "acquisition": {
+        "channel_settings": [
+          {
+            "ch": 1,
+            "enabled": true,
+            "scale": 1.0,
+            "offset": -1.5,
+            "probe": 10.0,
+            "coupling": "DC",
+            "impedance": "1M"
+          },
+          {
+            "ch": 2,
+            "enabled": true,
+            "scale": 1.0,
+            "offset": -1.5,
+            "probe": 10.0,
+            "coupling": "DC",
+            "impedance": "1M"
+          }
+        ],
+        "timebase": {
+          "scale": 0.1,
+          "delay": 0.0
+        },
+        "memory_depth_points": 100000.0,
+        "readback_sample_rate_hz": 100000.0,
+        "trigger": {
+          "source": "C2",
+          "level": 1.5,
+          "slope": "rising",
+          "coupling": "dc",
+          "noise_reject": false,
+          "holdoff": "off",
+          "holdoff_time": 8e-09,
+          "holdoff_start": "acquisition_start"
+        },
+        "trigger_parameters_verified": true
+      },
+      "raw_csv": "stop-4hz-near-start-2.csv",
+      "raw_csv_sha256": "2e2f822a055368f2bccd9d58f4174be16187be49192269069b152745c50efb97",
+      "channels": [],
+      "event": {
+        "attribute": "duty_cycle",
+        "value": 0,
+        "marker_start_s": 4.5373376084237035e-06,
+        "marker_end_s": 9.505892863052195e-05,
+        "marker_width_s": 9.052159102209824e-05,
+        "sample_interval_s": 9.999999747378752e-06,
+        "rising_edges_s": [
+          -0.0011156459769876153
+        ],
+        "falling_edges_s": [
+          0.12387443329190798
+        ],
+        "status": "observed",
+        "note": "CH2 encloses Python setter plus marker/timer overhead; no latency guarantee.",
+        "settled_low_after_one_4hz_period": true,
+        "output_low_delay_s": 0.12386989595429955,
+        "software_timing": {
+          "value": 0,
+          "attribute": "duty_cycle",
+          "elapsed_ns": 61036
+        },
+        "low_after_10ms_observation": false,
+        "low_after_one_period_observation": true
+      }
+    },
+    {
+      "id": "phase_restart-4hz-near-start-0",
+      "points": 100000,
+      "acquisition": {
+        "channel_settings": [
+          {
+            "ch": 1,
+            "enabled": true,
+            "scale": 1.0,
+            "offset": -1.5,
+            "probe": 10.0,
+            "coupling": "DC",
+            "impedance": "1M"
+          },
+          {
+            "ch": 2,
+            "enabled": true,
+            "scale": 1.0,
+            "offset": -1.5,
+            "probe": 10.0,
+            "coupling": "DC",
+            "impedance": "1M"
+          }
+        ],
+        "timebase": {
+          "scale": 0.1,
+          "delay": 0.0
+        },
+        "memory_depth_points": 100000.0,
+        "readback_sample_rate_hz": 100000.0,
+        "trigger": {
+          "source": "C2",
+          "level": 1.5,
+          "slope": "rising",
+          "coupling": "dc",
+          "noise_reject": false,
+          "holdoff": "off",
+          "holdoff_time": 8e-09,
+          "holdoff_start": "acquisition_start"
+        },
+        "trigger_parameters_verified": true
+      },
+      "raw_csv": "phase_restart-4hz-near-start-0.csv",
+      "raw_csv_sha256": "fb55e81eb09342e32e8e90b1b814524eda8538eab40c8adcf76318535ebeaa52",
+      "channels": [],
+      "event": {
+        "attribute": "duty_cycle",
+        "value": 32768,
+        "marker_start_s": 4.492658004787709e-06,
+        "marker_end_s": 0.24896469571993587,
+        "marker_width_s": 0.2489602030619311,
+        "sample_interval_s": 9.999999747378752e-06,
+        "rising_edges_s": [
+          -0.0010857140963434124,
+          0.2489243068888254,
+          0.4989243376289521
+        ],
+        "falling_edges_s": [
+          0.12391443205430291,
+          0.3739244500103631
+        ],
+        "status": "observed",
+        "note": "CH2 encloses Python setter plus marker/timer overhead; no latency guarantee.",
+        "software_timing": {
+          "value": 32768,
+          "attribute": "duty_cycle",
+          "elapsed_ns": 248901365
+        }
+      }
+    },
+    {
+      "id": "phase_restart-4hz-near-start-1",
+      "points": 100000,
+      "acquisition": {
+        "channel_settings": [
+          {
+            "ch": 1,
+            "enabled": true,
+            "scale": 1.0,
+            "offset": -1.5,
+            "probe": 10.0,
+            "coupling": "DC",
+            "impedance": "1M"
+          },
+          {
+            "ch": 2,
+            "enabled": true,
+            "scale": 1.0,
+            "offset": -1.5,
+            "probe": 10.0,
+            "coupling": "DC",
+            "impedance": "1M"
+          }
+        ],
+        "timebase": {
+          "scale": 0.1,
+          "delay": 0.0
+        },
+        "memory_depth_points": 100000.0,
+        "readback_sample_rate_hz": 100000.0,
+        "trigger": {
+          "source": "C2",
+          "level": 1.5,
+          "slope": "rising",
+          "coupling": "dc",
+          "noise_reject": false,
+          "holdoff": "off",
+          "holdoff_time": 8e-09,
+          "holdoff_start": "acquisition_start"
+        },
+        "trigger_parameters_verified": true
+      },
+      "raw_csv": "phase_restart-4hz-near-start-1.csv",
+      "raw_csv_sha256": "514e012719504fc8b913fb039fff2da3bbbade0f8397e8573aabf65d19132e5b",
+      "channels": [],
+      "event": {
+        "attribute": "duty_cycle",
+        "value": 32768,
+        "marker_start_s": 4.478683783115234e-06,
+        "marker_end_s": 0.24895461568336613,
+        "marker_width_s": 0.24895013699958302,
+        "sample_interval_s": 9.999999747378752e-06,
+        "rising_edges_s": [
+          -0.0010957199796135387,
+          0.24891424596522918,
+          0.4989042398256244
+        ],
+        "falling_edges_s": [
+          0.12390451379269758,
+          0.37391444794140766
+        ],
+        "status": "observed",
+        "note": "CH2 encloses Python setter plus marker/timer overhead; no latency guarantee.",
+        "software_timing": {
+          "value": 32768,
+          "attribute": "duty_cycle",
+          "elapsed_ns": 248931884
+        }
+      }
+    },
+    {
+      "id": "phase_restart-4hz-near-start-2",
+      "points": 100000,
+      "acquisition": {
+        "channel_settings": [
+          {
+            "ch": 1,
+            "enabled": true,
+            "scale": 1.0,
+            "offset": -1.5,
+            "probe": 10.0,
+            "coupling": "DC",
+            "impedance": "1M"
+          },
+          {
+            "ch": 2,
+            "enabled": true,
+            "scale": 1.0,
+            "offset": -1.5,
+            "probe": 10.0,
+            "coupling": "DC",
+            "impedance": "1M"
+          }
+        ],
+        "timebase": {
+          "scale": 0.1,
+          "delay": 0.0
+        },
+        "memory_depth_points": 100000.0,
+        "readback_sample_rate_hz": 100000.0,
+        "trigger": {
+          "source": "C2",
+          "level": 1.5,
+          "slope": "rising",
+          "coupling": "dc",
+          "noise_reject": false,
+          "holdoff": "off",
+          "holdoff_time": 8e-09,
+          "holdoff_start": "acquisition_start"
+        },
+        "trigger_parameters_verified": true
+      },
+      "raw_csv": "phase_restart-4hz-near-start-2.csv",
+      "raw_csv_sha256": "31817bdd679f014634951a7d2f4e8e6be032b61b40231ca77c19ee507e04d654",
+      "channels": [],
+      "event": {
+        "attribute": "duty_cycle",
+        "value": 32768,
+        "marker_start_s": 4.510883497749838e-06,
+        "marker_end_s": 0.24894463368570324,
+        "marker_width_s": 0.24894012280220548,
+        "sample_interval_s": 9.999999747378752e-06,
+        "rising_edges_s": [
+          -0.0010956055130957449,
+          0.24890429350552118,
+          0.49890435432742264
+        ],
+        "falling_edges_s": [
+          0.1238944280227331,
+          0.37390444038595066
+        ],
+        "status": "observed",
+        "note": "CH2 encloses Python setter plus marker/timer overhead; no latency guarantee.",
+        "software_timing": {
+          "value": 32768,
+          "attribute": "duty_cycle",
+          "elapsed_ns": 248901365
+        }
+      }
+    },
+    {
+      "id": "usb-gc-load",
+      "points": 100000,
+      "acquisition": {
+        "channel_settings": [
+          {
+            "ch": 1,
+            "enabled": true,
+            "scale": 1.0,
+            "offset": -1.5,
+            "probe": 10.0,
+            "coupling": "DC",
+            "impedance": "1M"
+          },
+          {
+            "ch": 2,
+            "enabled": true,
+            "scale": 1.0,
+            "offset": -1.5,
+            "probe": 10.0,
+            "coupling": "DC",
+            "impedance": "1M"
+          }
+        ],
+        "timebase": {
+          "scale": 0.02,
+          "delay": 0.0
+        },
+        "memory_depth_points": 100000.0,
+        "readback_sample_rate_hz": 500000.0,
+        "trigger": {
+          "source": "C1",
+          "level": 1.5,
+          "slope": "rising",
+          "coupling": "dc",
+          "noise_reject": false,
+          "holdoff": "off",
+          "holdoff_time": 8e-09,
+          "holdoff_start": "acquisition_start"
+        },
+        "trigger_parameters_verified": true
+      },
+      "raw_csv": "usb-gc-load.csv",
+      "raw_csv_sha256": "082bc529e4135fe076aa591e5f5fee4f851e11e1bd1622bc2f7530fef314c0eb",
+      "channels": [
+        {
+          "channel": 1,
+          "requested_frequency_hz": 1000,
+          "requested_duty_u16": 32768,
+          "expected": {
+            "top": 16000,
+            "prescaler": 0,
+            "period_s": 0.001,
+            "high_s": 0.0005,
+            "fraction": 0.5
+          },
+          "low_v": -0.26249996665865183,
+          "high_v": 3.3104167532486217,
+          "min_v": -0.4687499697320163,
+          "max_v": 3.5104167562288544,
+          "sample_rate_hz": 500000.00126237865,
+          "sample_interval_s": 1.9999999949504854e-06,
+          "frequency_tolerance_fraction": 0.005,
+          "pulse_tolerance_s": 5e-06,
+          "accuracy_note": "Functional engineering gates only; timebase and probes are not traceably calibrated.",
+          "threshold_v": 1.523958393294985,
+          "complete_cycles": 199,
+          "measured_frequency_hz": 1000.0200740142973,
+          "mean_period_s": 0.0009999799263886607,
+          "mean_high_s": 0.0004999842829965195,
+          "measured_duty_percent": 49.99943082629339,
+          "period_min_s": 0.0009982461211324595,
+          "period_max_s": 0.001000032050585034,
+          "high_min_s": 0.0004983382898026134,
+          "high_max_s": 0.0005000334634529466,
+          "frequency_check": "pass",
+          "shortest_pulse_samples": 250.00000063118932,
+          "periods_outside_gate": 0,
+          "pulses_outside_gate": 0,
+          "threshold_40_60_width_s": [
+            0.0005003965944658292,
+            0.0004995719715272112
+          ],
+          "pulse_check": "pass",
+          "status": "pass"
+        },
+        {
+          "channel": 2,
+          "requested_frequency_hz": 2000,
+          "requested_duty_u16": 32768,
+          "expected": {
+            "top": 8000,
+            "prescaler": 0,
+            "period_s": 0.0005,
+            "high_s": 0.00025,
+            "fraction": 0.5
+          },
+          "low_v": -0.208333299184839,
+          "high_v": 3.2604167525035637,
+          "min_v": -0.36249996814876795,
+          "max_v": 3.3687500874511898,
+          "sample_rate_hz": 500000.00126237865,
+          "sample_interval_s": 1.9999999949504854e-06,
+          "frequency_tolerance_fraction": 0.005,
+          "pulse_tolerance_s": 3.999999989900971e-06,
+          "accuracy_note": "Functional engineering gates only; timebase and probes are not traceably calibrated.",
+          "threshold_v": 1.5260417266593622,
+          "complete_cycles": 399,
+          "measured_frequency_hz": 2000.0400784578596,
+          "mean_period_s": 0.0004999899805863164,
+          "mean_high_s": 0.0002499890455860518,
+          "measured_duty_percent": 49.99880958370429,
+          "period_min_s": 0.0004987707183834317,
+          "period_max_s": 0.0005000261102793002,
+          "high_min_s": 0.00024882478094268023,
+          "high_max_s": 0.0002500212207199523,
+          "frequency_check": "pass",
+          "shortest_pulse_samples": 125.00000031559466,
+          "periods_outside_gate": 0,
+          "pulses_outside_gate": 0,
+          "threshold_40_60_width_s": [
+            0.0002504033813386842,
+            0.00024957472165870574
+          ],
+          "pulse_check": "pass",
+          "status": "pass"
+        }
+      ],
+      "load": {
+        "completed": true,
+        "ble_requested": false,
+        "ble_enabled_initial": null,
+        "duration": 6.0,
+        "ble_enabled": null,
+        "gc_count": 6952,
+        "loops": 6952,
+        "usb_count": 25,
+        "requested_duration": 6,
+        "pixel_count": 0,
+        "ble_advertising_during_load": false,
+        "ble_advertising": false
+      },
+      "record_duration_s": 0.19999999949504854,
+      "over_air_advertisement_observed": false
+    },
+    {
+      "id": "ble-usb-gc-load",
+      "points": 100000,
+      "acquisition": {
+        "channel_settings": [
+          {
+            "ch": 1,
+            "enabled": true,
+            "scale": 1.0,
+            "offset": -1.5,
+            "probe": 10.0,
+            "coupling": "DC",
+            "impedance": "1M"
+          },
+          {
+            "ch": 2,
+            "enabled": true,
+            "scale": 1.0,
+            "offset": -1.5,
+            "probe": 10.0,
+            "coupling": "DC",
+            "impedance": "1M"
+          }
+        ],
+        "timebase": {
+          "scale": 0.02,
+          "delay": 0.0
+        },
+        "memory_depth_points": 100000.0,
+        "readback_sample_rate_hz": 500000.0,
+        "trigger": {
+          "source": "C1",
+          "level": 1.5,
+          "slope": "rising",
+          "coupling": "dc",
+          "noise_reject": false,
+          "holdoff": "off",
+          "holdoff_time": 8e-09,
+          "holdoff_start": "acquisition_start"
+        },
+        "trigger_parameters_verified": true
+      },
+      "raw_csv": "ble-usb-gc-load.csv",
+      "raw_csv_sha256": "b4468c5eca69deb5aef24a647408ea55caab0a21843b8fe211c660855f536e72",
+      "channels": [
+        {
+          "channel": 1,
+          "requested_frequency_hz": 1000,
+          "requested_duty_u16": 32768,
+          "expected": {
+            "top": 16000,
+            "prescaler": 0,
+            "period_s": 0.001,
+            "high_s": 0.0005,
+            "fraction": 0.5
+          },
+          "low_v": -0.26041663329427434,
+          "high_v": 3.3125000866129994,
+          "min_v": -0.4874999700114131,
+          "max_v": 3.5166667563219867,
+          "sample_rate_hz": 500000.00126237865,
+          "sample_interval_s": 1.9999999949504854e-06,
+          "frequency_tolerance_fraction": 0.005,
+          "pulse_tolerance_s": 5e-06,
+          "accuracy_note": "Functional engineering gates only; timebase and probes are not traceably calibrated.",
+          "threshold_v": 1.5260417266593627,
+          "complete_cycles": 199,
+          "measured_frequency_hz": 1000.0202182944898,
+          "mean_period_s": 0.0009999797821142813,
+          "mean_high_s": 0.0004999836676895875,
+          "measured_duty_percent": 49.99937687595528,
+          "period_min_s": 0.0009983813015769921,
+          "period_max_s": 0.0010000222754925764,
+          "high_min_s": 0.0004984430139703677,
+          "high_max_s": 0.0005000269623278708,
+          "frequency_check": "pass",
+          "shortest_pulse_samples": 250.00000063118932,
+          "periods_outside_gate": 0,
+          "pulses_outside_gate": 0,
+          "threshold_40_60_width_s": [
+            0.0005003963329547903,
+            0.0004995709328562464
+          ],
+          "pulse_check": "pass",
+          "status": "pass"
+        },
+        {
+          "channel": 2,
+          "requested_frequency_hz": 2000,
+          "requested_duty_u16": 32768,
+          "expected": {
+            "top": 8000,
+            "prescaler": 0,
+            "period_s": 0.0005,
+            "high_s": 0.00025,
+            "fraction": 0.5
+          },
+          "low_v": -0.21041663254921628,
+          "high_v": 3.258333419139187,
+          "min_v": -0.3270833009543519,
+          "max_v": 3.3625000873580575,
+          "sample_rate_hz": 500000.00126237865,
+          "sample_interval_s": 1.9999999949504854e-06,
+          "frequency_tolerance_fraction": 0.005,
+          "pulse_tolerance_s": 3.999999989900971e-06,
+          "accuracy_note": "Functional engineering gates only; timebase and probes are not traceably calibrated.",
+          "threshold_v": 1.5239583932949854,
+          "complete_cycles": 399,
+          "measured_frequency_hz": 2000.0199808386108,
+          "mean_period_s": 0.0004999950048402511,
+          "mean_high_s": 0.00024999415974232,
+          "measured_duty_percent": 49.99933049212883,
+          "period_min_s": 0.0004987077707067113,
+          "period_max_s": 0.0005000255481064642,
+          "high_min_s": 0.0002487110440002188,
+          "high_max_s": 0.00025002429097782664,
+          "frequency_check": "pass",
+          "shortest_pulse_samples": 125.00000031559466,
+          "periods_outside_gate": 0,
+          "pulses_outside_gate": 0,
+          "threshold_40_60_width_s": [
+            0.0002504077348679542,
+            0.0002495805846166861
+          ],
+          "pulse_check": "pass",
+          "status": "pass"
+        }
+      ],
+      "load": {
+        "completed": true,
+        "ble_requested": true,
+        "ble_enabled_initial": true,
+        "duration": 6.0,
+        "ble_enabled": true,
+        "gc_count": 6555,
+        "loops": 6555,
+        "usb_count": 25,
+        "requested_duration": 6,
+        "pixel_count": 0,
+        "ble_advertising_during_load": true,
+        "ble_advertising": false
+      },
+      "record_duration_s": 0.19999999949504854,
+      "over_air_advertisement_observed": true
+    },
+    {
+      "id": "neopixel-usb-gc-load",
+      "points": 100000,
+      "acquisition": {
+        "channel_settings": [
+          {
+            "ch": 1,
+            "enabled": true,
+            "scale": 1.0,
+            "offset": -1.5,
+            "probe": 10.0,
+            "coupling": "DC",
+            "impedance": "1M"
+          },
+          {
+            "ch": 2,
+            "enabled": true,
+            "scale": 1.0,
+            "offset": -1.5,
+            "probe": 10.0,
+            "coupling": "DC",
+            "impedance": "1M"
+          }
+        ],
+        "timebase": {
+          "scale": 0.02,
+          "delay": 0.0
+        },
+        "memory_depth_points": 100000.0,
+        "readback_sample_rate_hz": 500000.0,
+        "trigger": {
+          "source": "C1",
+          "level": 1.5,
+          "slope": "rising",
+          "coupling": "dc",
+          "noise_reject": false,
+          "holdoff": "off",
+          "holdoff_time": 8e-09,
+          "holdoff_start": "acquisition_start"
+        },
+        "trigger_parameters_verified": true
+      },
+      "raw_csv": "neopixel-usb-gc-load.csv",
+      "raw_csv_sha256": "1d653cc6f59ff6d37249700b85993a8ceb1338f40f82e08dd9ae2ca6d3800954",
+      "channels": [
+        {
+          "channel": 1,
+          "requested_frequency_hz": 1000,
+          "requested_duty_u16": 32768,
+          "expected": {
+            "top": 16000,
+            "prescaler": 0,
+            "period_s": 0.001,
+            "high_s": 0.0005,
+            "fraction": 0.5
+          },
+          "low_v": -0.26041663329427434,
+          "high_v": 3.3104167532486217,
+          "min_v": -0.4749999698251486,
+          "max_v": 3.5166667563219867,
+          "sample_rate_hz": 500000.00126237865,
+          "sample_interval_s": 1.9999999949504854e-06,
+          "frequency_tolerance_fraction": 0.005,
+          "pulse_tolerance_s": 5e-06,
+          "accuracy_note": "Functional engineering gates only; timebase and probes are not traceably calibrated.",
+          "threshold_v": 1.5250000599771738,
+          "complete_cycles": 199,
+          "measured_frequency_hz": 1000.0100923576058,
+          "mean_period_s": 0.0009999899077442489,
+          "mean_high_s": 0.0004999956012889822,
+          "measured_duty_percent": 50.000064789012775,
+          "period_min_s": 0.000998901411827232,
+          "period_max_s": 0.0010000283879647298,
+          "high_min_s": 0.0004991223716784305,
+          "high_max_s": 0.0005000219597783573,
+          "frequency_check": "pass",
+          "shortest_pulse_samples": 250.00000063118932,
+          "periods_outside_gate": 0,
+          "pulses_outside_gate": 0,
+          "threshold_40_60_width_s": [
+            0.0005004073335833555,
+            0.0004995839078500577
+          ],
+          "pulse_check": "pass",
+          "status": "pass"
+        }
+      ],
+      "load": {
+        "completed": true,
+        "ble_requested": false,
+        "ble_enabled_initial": null,
+        "duration": 6.001222,
+        "ble_enabled": null,
+        "gc_count": 1537,
+        "loops": 1537,
+        "usb_count": 25,
+        "requested_duration": 6,
+        "pixel_count": 1537,
+        "ble_advertising_during_load": false,
+        "ble_advertising": false
+      },
+      "record_duration_s": 0.19999999949504854,
+      "over_air_advertisement_observed": false,
+      "pixel_pin_activity": {
+        "min_v": -0.11874996451660991,
+        "max_v": 3.391666754459341,
+        "samples_above_1_5_v": 236,
+        "note": "Activity only; sample rate insufficient for NeoPixel bit timing qualification"
+      }
+    },
+    {
+      "id": "post-neopixel-reallocation",
+      "points": 100000,
+      "acquisition": {
+        "channel_settings": [
+          {
+            "ch": 1,
+            "enabled": true,
+            "scale": 1.0,
+            "offset": -1.5,
+            "probe": 10.0,
+            "coupling": "DC",
+            "impedance": "1M"
+          },
+          {
+            "ch": 2,
+            "enabled": true,
+            "scale": 1.0,
+            "offset": -1.5,
+            "probe": 10.0,
+            "coupling": "DC",
+            "impedance": "1M"
+          }
+        ],
+        "timebase": {
+          "scale": 0.002,
+          "delay": 0.0
+        },
+        "memory_depth_points": 100000.0,
+        "readback_sample_rate_hz": 5000000.0,
+        "trigger": {
+          "source": "C1",
+          "level": 1.5,
+          "slope": "rising",
+          "coupling": "dc",
+          "noise_reject": false,
+          "holdoff": "off",
+          "holdoff_time": 8e-09,
+          "holdoff_start": "acquisition_start"
+        },
+        "trigger_parameters_verified": true
+      },
+      "raw_csv": "post-neopixel-reallocation.csv",
+      "raw_csv_sha256": "c1c67c1bbd8b4733ad515dac2fa3188ebd013e62db7f43991f2b25287f4f906c",
+      "channels": [
+        {
+          "channel": 1,
+          "requested_frequency_hz": 1000,
+          "requested_duty_u16": 32768,
+          "expected": {
+            "top": 16000,
+            "prescaler": 0,
+            "period_s": 0.001,
+            "high_s": 0.0005,
+            "fraction": 0.5
+          },
+          "low_v": -0.26249996665865183,
+          "high_v": 3.3104167532486217,
+          "min_v": -0.4749999698251486,
+          "max_v": 3.5312500898726285,
+          "sample_rate_hz": 4999999.941569514,
+          "sample_interval_s": 2.0000000233721948e-07,
+          "frequency_tolerance_fraction": 0.005,
+          "pulse_tolerance_s": 5e-06,
+          "accuracy_note": "Functional engineering gates only; timebase and probes are not traceably calibrated.",
+          "threshold_v": 1.523958393294985,
+          "complete_cycles": 19,
+          "measured_frequency_hz": 1000.0105079325003,
+          "mean_period_s": 0.0009999894921779151,
+          "mean_high_s": 0.0004999940884117153,
+          "measured_duty_percent": 49.99993422807735,
+          "period_min_s": 0.0009999017929404228,
+          "period_max_s": 0.001000001185283316,
+          "high_min_s": 0.0004999006532718396,
+          "high_max_s": 0.0005000012790295355,
+          "frequency_check": "pass",
+          "shortest_pulse_samples": 2499.999970784757,
+          "periods_outside_gate": 0,
+          "pulses_outside_gate": 0,
+          "threshold_40_60_width_s": [
+            0.0005000364464240323,
+            0.0004999519894127775
+          ],
+          "pulse_check": "pass",
+          "status": "pass"
+        },
+        {
+          "channel": 2,
+          "requested_frequency_hz": 2000,
+          "requested_duty_u16": 32768,
+          "expected": {
+            "top": 8000,
+            "prescaler": 0,
+            "period_s": 0.0005,
+            "high_s": 0.00025,
+            "fraction": 0.5
+          },
+          "low_v": -0.208333299184839,
+          "high_v": 3.258333419139187,
+          "min_v": -0.3354166344118614,
+          "max_v": 3.364583420722435,
+          "sample_rate_hz": 4999999.941569514,
+          "sample_interval_s": 2.0000000233721948e-07,
+          "frequency_tolerance_fraction": 0.005,
+          "pulse_tolerance_s": 2.5e-06,
+          "accuracy_note": "Functional engineering gates only; timebase and probes are not traceably calibrated.",
+          "threshold_v": 1.5250000599771738,
+          "complete_cycles": 39,
+          "measured_frequency_hz": 2000.0204905153291,
+          "mean_period_s": 0.0004999948774236498,
+          "mean_high_s": 0.00024999475294244376,
+          "measured_duty_percent": 49.99946273846952,
+          "period_min_s": 0.0004998680049517583,
+          "period_max_s": 0.0005000014408522773,
+          "high_min_s": 0.00024985941189404476,
+          "high_max_s": 0.00025000158725639425,
+          "frequency_check": "pass",
+          "shortest_pulse_samples": 1249.9999853923784,
+          "periods_outside_gate": 0,
+          "pulses_outside_gate": 0,
+          "threshold_40_60_width_s": [
+            0.0002500366216687549,
+            0.00024995288421613283
+          ],
+          "pulse_check": "pass",
+          "status": "pass"
+        }
+      ]
+    }
+  ],
+  "host_probe_mock_tests_passed": 51,
+  "limitations": [
+    "Load records cover 0.2 seconds within approximately 6-second workloads, not continuous whole-workload acquisition",
+    "BLE advertising was observed over air; connected BLE traffic/throughput was not tested",
+    "NeoPixel transmission activity and controller reuse were tested, not forced controller-exhaustion or physical LED color/bit timing qualification",
+    "Selected transition captures do not prove universally glitch-free updates",
+    "Near-start stop/restart trials characterize near-worst phases, not a phase-exhaustive latency guarantee",
+    "GPIO marker includes Python marker/timer overhead; monotonic_ns is quantized and is not an independent calibrated clock",
+    "PM was disabled; native_sim, broader nRF configuration coverage, TOP=3 and full MISRA C:2025 evidence remain separate work"
+  ],
+  "setup_failures_excluded": [
+    "Initial VXI-11 waveform transfer failed; accepted captures used the raw SCPI socket",
+    "Loose CH2 connection invalidated early marker attempts; static high/low verified after user correction",
+    "Brief marker events were lost while scope status was Arm; accepted events waited for Ready before stimulus",
+    "USB file flush/cache and host BLE helper event-loop/scanning integration errors were corrected before accepted tests"
+  ],
+  "cleanup": {
+    "pwm_objects_deinitialized": true,
+    "ble_advertising_stopped": true,
+    "ble_restored_disabled": true,
+    "original_code_py_unchanged": true,
+    "temporary_target_file": "pwm_scope_probe.py remains on CIRCUITPY; outside-workspace deletion was denied"
+  },
+  "summary": {
+    "valid_captures": 25,
+    "functional_channel_checks_passed": 21,
+    "transition_observations": 14,
+    "functional_channel_checks_failed": 0
+  }
+}

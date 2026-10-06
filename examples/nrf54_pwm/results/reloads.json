@@ -1,0 +1,322 @@
+[
+  {
+    "reload": 1,
+    "status": "pass",
+    "output": [
+      ">>> ",
+      ">>> ",
+      "soft reboot",
+      "code.py output:",
+      "PWM_RELOAD_OK_0",
+      "",
+      "Code done running."
+    ]
+  },
+  {
+    "reload": 2,
+    "status": "pass",
+    "output": [
+      "",
+      "Adafruit CircuitPython 11.0.0-alpha.1-37-g7d715c1a20-dirty on 2026-10-06; nRF54LM20 DK with nrf54lm20a",
+      ">>> ",
+      ">>> ",
+      ">>> ",
+      "soft reboot",
+      "code.py output:",
+      "PWM_RELOAD_OK_1",
+      "",
+      "Code done running.",
+      "",
+      "Adafruit CircuitPython 11.0.0-alpha.1-37-g7d715c1a20-dirty on 2026-10-06; nRF54LM20 DK with nrf54lm20a",
+      ">>> "
+    ]
+  },
+  {
+    "reload": 3,
+    "status": "pass",
+    "output": [
+      ">>> ",
+      ">>> ",
+      "soft reboot",
+      "code.py output:",
+      "PWM_RELOAD_OK_2",
+      "",
+      "Code done running.",
+      "",
+      "Adafruit CircuitPython 11.0.0-alpha.1-37-g7d715c1a20-dirty on 2026-10-06; nRF54LM20 DK with nrf54lm20a",
+      ">>> "
+    ]
+  },
+  {
+    "reload": 4,
+    "status": "pass",
+    "output": [
+      ">>> ",
+      ">>> ",
+      "soft reboot",
+      "code.py output:",
+      "PWM_RELOAD_OK_3",
+      "",
+      "Code done running.",
+      "",
+      "Adafruit CircuitPython 11.0.0-alpha.1-37-g7d715c1a20-dirty on 2026-10-06; nRF54LM20 DK with nrf54lm20a",
+      ">>> "
+    ]
+  },
+  {
+    "reload": 5,
+    "status": "pass",
+    "output": [
+      ">>> ",
+      ">>> ",
+      "soft reboot",
+      "code.py output:",
+      "PWM_RELOAD_OK_4",
+      "",
+      "Code done running.",
+      "",
+      "Adafruit CircuitPython 11.0.0-alpha.1-37-g7d715c1a20-dirty on 2026-10-06; nRF54LM20 DK with nrf54lm20a",
+      ">>> "
+    ]
+  },
+  {
+    "reload": 6,
+    "status": "pass",
+    "output": [
+      ">>> ",
+      ">>> ",
+      "soft reboot",
+      "code.py output:",
+      "PWM_RELOAD_OK_5",
+      "",
+      "Code done running.",
+      "",
+      "Adafruit CircuitPython 11.0.0-alpha.1-37-g7d715c1a20-dirty on 2026-10-06; nRF54LM20 DK with nrf54lm20a",
+      ">>> "
+    ]
+  },
+  {
+    "reload": 7,
+    "status": "pass",
+    "output": [
+      ">>> ",
+      ">>> ",
+      "soft reboot",
+      "code.py output:",
+      "PWM_RELOAD_OK_6",
+      "",
+      "Code done running.",
+      "",
+      "Adafruit CircuitPython 11.0.0-alpha.1-37-g7d715c1a20-dirty on 2026-10-06; nRF54LM20 DK with nrf54lm20a",
+      ">>> "
+    ]
+  },
+  {
+    "reload": 8,
+    "status": "pass",
+    "output": [
+      ">>> ",
+      ">>> ",
+      "soft reboot",
+      "code.py output:",
+      "PWM_RELOAD_OK_7",
+      "",
+      "Code done running.",
+      "",
+      "Adafruit CircuitPython 11.0.0-alpha.1-37-g7d715c1a20-dirty on 2026-10-06; nRF54LM20 DK with nrf54lm20a",
+      ">>> "
+    ]
+  },
+  {
+    "reload": 9,
+    "status": "pass",
+    "output": [
+      ">>> ",
+      ">>> ",
+      "soft reboot",
+      "code.py output:",
+      "PWM_RELOAD_OK_8",
+      "",
+      "Code done running.",
+      "",
+      "Adafruit CircuitPython 11.0.0-alpha.1-37-g7d715c1a20-dirty on 2026-10-06; nRF54LM20 DK with nrf54lm20a",
+      ">>> "
+    ]
+  },
+  {
+    "reload": 10,
+    "status": "pass",
+    "output": [
+      ">>> ",
+      ">>> ",
+      "soft reboot",
+      "code.py output:",
+      "PWM_RELOAD_OK_9",
+      "",
+      "Code done running.",
+      "",
+      "Adafruit CircuitPython 11.0.0-alpha.1-37-g7d715c1a20-dirty on 2026-10-06; nRF54LM20 DK with nrf54lm20a",
+      ">>> "
+    ]
+  },
+  {
+    "reload": 11,
+    "status": "pass",
+    "output": [
+      ">>> ",
+      ">>> ",
+      "soft reboot",
+      "code.py output:",
+      "PWM_RELOAD_OK_10",
+      "",
+      "Code done running.",
+      "",
+      "Adafruit CircuitPython 11.0.0-alpha.1-37-g7d715c1a20-dirty on 2026-10-06; nRF54LM20 DK with nrf54lm20a",
+      ">>> "
+    ]
+  },
+  {
+    "reload": 12,
+    "status": "pass",
+    "output": [
+      ">>> ",
+      ">>> ",
+      "soft reboot",
+      "code.py output:",
+      "PWM_RELOAD_OK_11",
+      "",
+      "Code done running.",
+      "",
+      "Adafruit CircuitPython 11.0.0-alpha.1-37-g7d715c1a20-dirty on 2026-10-06; nRF54LM20 DK with nrf54lm20a",
+      ">>> "
+    ]
+  },
+  {
+    "reload": 13,
+    "status": "pass",
+    "output": [
+      ">>> ",
+      ">>> ",
+      "soft reboot",
+      "code.py output:",
+      "PWM_RELOAD_OK_12",
+      "",
+      "Code done running.",
+      "",
+      "Adafruit CircuitPython 11.0.0-alpha.1-37-g7d715c1a20-dirty on 2026-10-06; nRF54LM20 DK with nrf54lm20a",
+      ">>> "
+    ]
+  },
+  {
+    "reload": 14,
+    "status": "pass",
+    "output": [
+      ">>> ",
+      ">>> ",
+      "soft reboot",
+      "code.py output:",
+      "PWM_RELOAD_OK_13",
+      "",
+      "Code done running.",
+      "",
+      "Adafruit CircuitPython 11.0.0-alpha.1-37-g7d715c1a20-dirty on 2026-10-06; nRF54LM20 DK with nrf54lm20a",
+      ">>> "
+    ]
+  },
+  {
+    "reload": 15,
+    "status": "pass",
+    "output": [
+      ">>> ",
+      ">>> ",
+      "soft reboot",
+      "code.py output:",
+      "PWM_RELOAD_OK_14",
+      "",
+      "Code done running.",
+      "",
+      "Adafruit CircuitPython 11.0.0-alpha.1-37-g7d715c1a20-dirty on 2026-10-06; nRF54LM20 DK with nrf54lm20a",
+      ">>> "
+    ]
+  },
+  {
+    "reload": 16,
+    "status": "pass",
+    "output": [
+      ">>> ",
+      ">>> ",
+      "soft reboot",
+      "code.py output:",
+      "PWM_RELOAD_OK_15",
+      "",
+      "Code done running.",
+      "",
+      "Adafruit CircuitPython 11.0.0-alpha.1-37-g7d715c1a20-dirty on 2026-10-06; nRF54LM20 DK with nrf54lm20a",
+      ">>> "
+    ]
+  },
+  {
+    "reload": 17,
+    "status": "pass",
+    "output": [
+      ">>> ",
+      ">>> ",
+      "soft reboot",
+      "code.py output:",
+      "PWM_RELOAD_OK_16",
+      "",
+      "Code done running.",
+      "",
+      "Adafruit CircuitPython 11.0.0-alpha.1-37-g7d715c1a20-dirty on 2026-10-06; nRF54LM20 DK with nrf54lm20a",
+      ">>> "
+    ]
+  },
+  {
+    "reload": 18,
+    "status": "pass",
+    "output": [
+      ">>> ",
+      ">>> ",
+      "soft reboot",
+      "code.py output:",
+      "PWM_RELOAD_OK_17",
+      "",
+      "Code done running.",
+      "",
+      "Adafruit CircuitPython 11.0.0-alpha.1-37-g7d715c1a20-dirty on 2026-10-06; nRF54LM20 DK with nrf54lm20a",
+      ">>> "
+    ]
+  },
+  {
+    "reload": 19,
+    "status": "pass",
+    "output": [
+      ">>> ",
+      ">>> ",
+      "soft reboot",
+      "code.py output:",
+      "PWM_RELOAD_OK_18",
+      "",
+      "Code done running.",
+      "",
+      "Adafruit CircuitPython 11.0.0-alpha.1-37-g7d715c1a20-dirty on 2026-10-06; nRF54LM20 DK with nrf54lm20a",
+      ">>> "
+    ]
+  },
+  {
+    "reload": 20,
+    "status": "pass",
+    "output": [
+      ">>> ",
+      ">>> ",
+      "soft reboot",
+      "code.py output:",
+      "PWM_RELOAD_OK_19",
+      "",
+      "Code done running.",
+      "",
+      "Adafruit CircuitPython 11.0.0-alpha.1-37-g7d715c1a20-dirty on 2026-10-06; nRF54LM20 DK with nrf54lm20a",
+      ">>> "
+    ]
+  }
+]

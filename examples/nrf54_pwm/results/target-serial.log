@@ -1,0 +1,6 @@
+>>>
+>>>
+>>> exec(open('code.py').read())
+PWM_BENCH {"changed_ns": 13793947, "repeated_ns": 6774901, "updates": 1000}
+PWM_RESULTS [{"id": "invalid_frequency", "status": "pass"}, {"id": "endpoints", "status": "pass"}, {"id": "fixed_deinit", "status": "pass"}, {"id": "claims", "status": "pass"}, {"id": "context_exception", "status": "pass"}, {"id": "cycles_100", "status": "pass"}, {"id": "garbage_collection", "status": "pass"}, {"id": "update_cost", "status": "pass"}]
+>>>

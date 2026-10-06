@@ -1,0 +1,17 @@
+{
+  "standard_requested": "MISRA C:2025",
+  "checker": "Cppcheck 2.21.0",
+  "addon": "MISRA C:2012 subset, not full C:2025 enforcement",
+  "preprocessing": "Actual ARM compiler and captured firmware flags; line markers retained",
+  "translation_units": [
+    "PWMOut.c",
+    "pwm_timing.c"
+  ],
+  "exit_code": 1,
+  "compliance_claim": false,
+  "remaining": [
+    "Licensed C:2025 reference/manual coverage unavailable",
+    "Review adopted-header and framework-boundary findings",
+    "Checked-release broker code requires separate scoped review"
+  ]
+}

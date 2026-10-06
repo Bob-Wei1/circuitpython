@@ -359,6 +359,23 @@ static bool iobroker_state_find(const struct device *dev, iobroker_state_t **sta
     return false;
 }
 
+int iobroker_release_checked(const struct device *dev) {
+    int result = -EINVAL;
+    iobroker_state_t *state = NULL;
+    if ((dev != NULL) && iobroker_state_find(dev, &state) && state->in_use) {
+        result = device_deinit(dev);
+        if ((result == -EPERM) && !device_is_ready(dev)) {
+            result = 0;
+        }
+        if (result == 0) {
+            state->in_use = false;
+            state->routed = false;
+            state->pin_count = 0U;
+        }
+    }
+    return result;
+}
+
 bool iobroker_release(const struct device *dev) {
     iobroker_state_t *state = NULL;
     if (!iobroker_state_find(dev, &state)) {

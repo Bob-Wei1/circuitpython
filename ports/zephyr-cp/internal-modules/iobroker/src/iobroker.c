@@ -137,6 +137,11 @@ int iobroker_pwm_allocate(package_pin_t pin, const struct device **dev_out) {
     return -ENOSYS;
 }
 
+int iobroker_release_checked(const struct device *dev) {
+    (void)dev;
+    return -ENOSYS;
+}
+
 bool iobroker_release(const struct device *dev) {
     (void)dev;
     LOG_DBG("release: no routing support on this SoC, nothing to release");

@@ -1,0 +1,10 @@
+# Keep summaries; large/local build and capture artifacts remain on disk.
+*.csv
+*.pre.c
+*.dump
+*.ctu-info
+compiler_macros.h
+circuitpython_compile_commands.json
+cppcheck*.log
+checkers*.txt
+!target-serial.log
