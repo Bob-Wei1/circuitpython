@@ -1,0 +1,34 @@
+[
+  {
+    "id": "invalid_frequency",
+    "status": "pass"
+  },
+  {
+    "id": "endpoints",
+    "status": "pass"
+  },
+  {
+    "id": "fixed_deinit",
+    "status": "pass"
+  },
+  {
+    "id": "claims",
+    "status": "pass"
+  },
+  {
+    "id": "context_exception",
+    "status": "pass"
+  },
+  {
+    "id": "cycles_100",
+    "status": "pass"
+  },
+  {
+    "id": "garbage_collection",
+    "status": "pass"
+  },
+  {
+    "id": "update_cost",
+    "status": "pass"
+  }
+]

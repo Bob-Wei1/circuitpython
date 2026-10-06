@@ -6,6 +6,7 @@ import logging
 import os
 import pathlib
 import re
+import shlex
 import tempfile
 import time
 from typing import Optional
@@ -15,6 +16,7 @@ logger = logging.getLogger(__name__)
 shared_semaphore = None
 
 trace_entries = []
+compile_commands = []
 LAST_BUILD_TIMES = {}
 ALREADY_RUN = {}
 _last_build_times = pathlib.Path("last_build_times.json")
@@ -29,6 +31,12 @@ else:
 
 
 def save_trace():
+    if destination := os.environ.get("CIRCUITPY_COMPILE_COMMANDS"):
+        path = pathlib.Path(destination)
+        previous = json.loads(path.read_text()) if path.exists() else []
+        records = {(entry["directory"], entry["file"]): entry for entry in previous}
+        records.update({(entry["directory"], entry["file"]): entry for entry in compile_commands})
+        path.write_text(json.dumps(list(records.values()), indent=2) + "\n")
     with open("trace.json", "w") as f:
         json.dump(trace_entries, f)
     with open("last_build_times.json", "w") as f:
@@ -228,6 +236,16 @@ async def run_command(
             tracks.append(max_track)
         track = tracks.pop()
         start_time = time.perf_counter_ns() // 1000
+        if os.environ.get("CIRCUITPY_COMPILE_COMMANDS"):
+            arguments = shlex.split(command_string)
+            if "-c" in arguments and "-E" not in arguments:
+                source = arguments[arguments.index("-c") + 1]
+                if source.endswith(".c"):
+                    compile_commands.append({
+                        "directory": str(working_directory),
+                        "file": source,
+                        "arguments": arguments,
+                    })
         process = await asyncio.create_subprocess_shell(
             command_string,
             stdout=asyncio.subprocess.PIPE,

@@ -1,0 +1,12 @@
+{
+  "no_pm": {
+    "lifecycle_cases": 125,
+    "pm_build": false
+  },
+  "pm": {
+    "lifecycle_cases": 125,
+    "pm_build": true
+  },
+  "frequency_oracle_cases": 3122,
+  "exhaustive_duty_cases": 327680
+}
