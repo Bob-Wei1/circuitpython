@@ -30,12 +30,23 @@ else:
     )
 
 
+def _compile_command_key(entry, database_directory):
+    directory = (database_directory / entry["directory"]).resolve()
+    source = (directory / entry["file"]).resolve()
+    arguments = entry["arguments"]
+    output = (directory / arguments[arguments.index("-o") + 1]).resolve()
+    # Compiles from different build trees share the same source working directory.
+    return directory, source, output
+
+
 def save_trace():
     if destination := os.environ.get("CIRCUITPY_COMPILE_COMMANDS"):
         path = pathlib.Path(destination)
         previous = json.loads(path.read_text()) if path.exists() else []
-        records = {(entry["directory"], entry["file"]): entry for entry in previous}
-        records.update({(entry["directory"], entry["file"]): entry for entry in compile_commands})
+        records = {
+            _compile_command_key(entry, path.parent): entry
+            for entry in [*previous, *compile_commands]
+        }
         path.write_text(json.dumps(list(records.values()), indent=2) + "\n")
     with open("trace.json", "w") as f:
         json.dump(trace_entries, f)
@@ -241,11 +252,13 @@ async def run_command(
             if "-c" in arguments and "-E" not in arguments:
                 source = arguments[arguments.index("-c") + 1]
                 if source.endswith(".c"):
-                    compile_commands.append({
-                        "directory": str(working_directory),
-                        "file": source,
-                        "arguments": arguments,
-                    })
+                    compile_commands.append(
+                        {
+                            "directory": str(working_directory),
+                            "file": source,
+                            "arguments": arguments,
+                        }
+                    )
         process = await asyncio.create_subprocess_shell(
             command_string,
             stdout=asyncio.subprocess.PIPE,

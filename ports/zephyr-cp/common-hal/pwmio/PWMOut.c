@@ -11,12 +11,10 @@
 static int program_output(pwmio_pwmout_obj_t *self, const pwmio_timing_t *timing,
     uint32_t pulse) {
     int result = 0;
-    #if !defined(CONFIG_PM_DEVICE)
     if (self->programmed && (self->timing.period_cycles == timing->period_cycles) &&
         (self->pulse_cycles == pulse)) {
         return result;
     }
-    #endif
     result = pwm_set_cycles(self->device, 0U, timing->period_cycles, pulse, PWM_POLARITY_NORMAL);
     if (result != 0) {
         // A failed update may have changed hardware before returning an error.
@@ -30,9 +28,7 @@ static int program_output(pwmio_pwmout_obj_t *self, const pwmio_timing_t *timing
 
 pwmout_result_t common_hal_pwmio_pwmout_construct(pwmio_pwmout_obj_t *self,
     const mcu_pin_obj_t *pin, uint16_t duty, uint32_t frequency, bool variable_frequency) {
-    pwmout_result_t result = PWMOUT_OK;
     pwmio_timing_t timing = {0};
-    uint64_t clock = UINT64_C(0);
     self->pin = NULL;
     self->device = NULL;
     self->timing = timing;
@@ -41,6 +37,16 @@ pwmout_result_t common_hal_pwmio_pwmout_construct(pwmio_pwmout_obj_t *self,
     self->variable_frequency = variable_frequency;
     self->programmed = false;
 
+    #if defined(CONFIG_PM_DEVICE) || defined(CONFIG_PM_DEVICE_RUNTIME)
+    // The Zephyr driver does not restore a waveform after device suspend/resume.
+    // Metadata excludes PM builds; reject construction if pwmio is forced on.
+    (void)pin;
+    (void)duty;
+    (void)frequency;
+    return PWMOUT_INITIALIZATION_ERROR;
+    #else
+    pwmout_result_t result = PWMOUT_OK;
+    uint64_t clock = UINT64_C(0);
     if (!pwmio_compute_timing(frequency, &timing)) {
         result = PWMOUT_INVALID_FREQUENCY;
     } else {
@@ -81,6 +87,7 @@ pwmout_result_t common_hal_pwmio_pwmout_construct(pwmio_pwmout_obj_t *self,
         }
     }
     return result;
+    #endif
 }
 
 bool common_hal_pwmio_pwmout_deinited(pwmio_pwmout_obj_t *self) {

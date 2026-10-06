@@ -18,5 +18,8 @@ The user elected to run available checks without supplying the licensed C:2025 r
 
 `results/analysis.json` records tool scope and nonzero analysis status. A successful build,
 clean subset, or hardware test does **not** establish MISRA compliance. No check was disabled
-to obtain a passing compliance result. Implementation review was performed by the main agent
-as requested; it is not represented as an independent post-implementation review.
+to obtain a passing compliance result. The recorded analyzer run precedes the review fixes;
+it has not been rerun and is not evidence for the updated C configuration guard.
+A later independent read-only implementation review identified PM, capability-detection and
+compiler-database issues. Addressing them and passing regressions is not a MISRA audit or
+an approved deviation.

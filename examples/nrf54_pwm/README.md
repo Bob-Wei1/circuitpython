@@ -35,9 +35,16 @@ DC coupling and 1 MΩ inputs. Disconnect AD3 signal leads. Never put a probe gro
 
 ## Observed results
 
-- Host: 3,122 independent frequency-oracle checks; 327,680 duty checks;
-  250 sanitized lifecycle/fault-injection cases.
-- Existing Zephyr tooling suite: 59 passed. LM20 build passed; unsupported RP2040
+Physical API, AD3 and Siglent results below are historical measurements of source
+`25d60b8fa56140b89ea7e7b453afa62dbe275ab8`, with the signed firmware digest in
+`results/build.json`. They were not rerun after the review fixes because the DK was unavailable.
+Current software/build validation is recorded separately in `results/review-fixes.json`.
+
+- Current host regressions: 3,122 independent frequency-oracle checks; 327,680 duty checks;
+  125 sanitized lifecycle/fault-injection cases in the supported non-PM configuration;
+  54 device-PM/runtime-PM configuration rejections with zero hardware calls.
+- Current Zephyr tooling suite: 110 passed, including 16 PWM capability and 35 compiler-database
+  regression cases. LM20 rebuild passed; the earlier unsupported RP2040
   build passed with pwmio disabled. Full Linux native_sim suite was not run (Docker daemon stopped).
 - Physical target: all 8 API/lifecycle groups passed, including 100 construct/deinit cycles
   and 20 soft reloads with a live PWM object. Original `code.py` was restored.
@@ -105,6 +112,30 @@ Both PWM objects were deinitialized, BLE was restored off, and `code.py` was unc
 The temporary `pwm_scope_probe.py` remains on CIRCUITPY because outside-workspace deletion
 was denied; it does not run automatically as `code.py`.
 
+## Review fixes and configuration policy
+
+`pwmio` is intentionally unavailable when `CONFIG_PM_DEVICE` or
+`CONFIG_PM_DEVICE_RUNTIME` is enabled. The pinned Zephyr nRF PWM driver clears its
+waveform state during suspend/resume; this backend has no restoration hook. Capability
+metadata excludes those configurations, and forced construction is rejected before
+claiming pins or invoking drivers. This is an explicit unsupported configuration, not
+new PM lifecycle support. The earlier PM host variant tested stubbed operations, not
+real driver suspend/resume; its normal-operation checks were replaced with rejection tests.
+
+Capability detection requires a nonempty dynamically routable PWM pool. Fixed entries
+remain in the shared iobroker tables but do not establish PWMOut availability, and their
+alignment cannot disable usable dynamic entries. Every dynamic entry must be edge-aligned
+because the allocator can select any one of them; mixed dynamic alignment remains unsupported.
+NeoPixel pool generation is unchanged.
+
+The opt-in compiler database now retains separate records for different object outputs,
+even when builds share a source working directory. `analyze.py` selects the exact two
+Zephyr PWM backend source paths and object outputs beneath `build-pwm-nrf54lm20`, resolves
+relative paths, and rejects missing/ambiguous matches before preprocessing or writing reports.
+Both commands must contain exactly their declared source input; mismatches, missing/duplicate
+inputs and foreign source operands fail before output changes. It no longer selects unrelated
+`PWMOut.c` files or appends a duplicate source operand.
+
 ## Limits
 
 One whole PWM controller per output; two dynamically routable controllers on this DK.
@@ -114,6 +145,7 @@ but it has not been qualified here. No new polarity, center-alignment, ISR or ch
 
 Full MISRA C:2025 compliance is **not claimed**; see `COMPLIANCE.md` and `results/analysis.json`.
 Traceably calibrated high-frequency pulse-width/absolute jitter checks, connected BLE and
-longer load/exhaustion coverage remain open. PM hardware cases were not run with PM disabled.
+longer load/exhaustion coverage remain open. Device PM/runtime-PM configurations are unsupported;
+adding lifecycle restoration would require separate implementation and hardware qualification.
 Low-frequency stop/restart can delay physical output changes and block the VM for nearly
 one period; do not infer a universal microsecond setter bound from the cached-write benchmark.

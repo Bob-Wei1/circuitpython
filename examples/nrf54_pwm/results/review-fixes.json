@@ -1,0 +1,62 @@
+{
+  "date": "2026-10-06",
+  "base_commit": "2e119a5cfc703d77ecafbe90997d16d34bb8e56f",
+  "scope": "Review-fix working tree: explicit device-PM exclusion, allocatable PWM capability policy, exact compiler database source/build identity",
+  "pm_policy": {
+    "device_pm_supported": false,
+    "runtime_device_pm_supported": false,
+    "metadata_disables_pwmio": true,
+    "forced_constructor_rejected_before_hardware_calls": true,
+    "sanitized_configuration_rejections": 54,
+    "hardware_boundary_calls_in_rejection_tests": 0
+  },
+  "host_validation": {
+    "tooling_tests_passed": 110,
+    "new_pwm_codegen_cases": 16,
+    "new_compile_database_cases": 35,
+    "non_pm_lifecycle_fault_injection_cases": 125,
+    "frequency_oracle_cases": 3122,
+    "exhaustive_duty_cases": 327680,
+    "sanitizers": ["AddressSanitizer", "UndefinedBehaviorSanitizer"],
+    "python_format_checks": "passed for six changed Python files",
+    "scoped_python_lint": "passed for host tests, analysis helper and new compiler database tests",
+    "existing_tooling_lint_findings": "No new findings in cpbuild.py or zephyr2cp.py; existing findings remain",
+    "c_formatter": "uncrustify unavailable; host -Wall/-Wextra/-Werror compilation and ARM firmware build passed",
+    "diff_whitespace_check": "passed"
+  },
+  "target_build": {
+    "status": "passed",
+    "board_alias": "nordic_nrf54lm20dk",
+    "zephyr_target": "nrf54lm20dk/nrf54lm20a/cpuapp",
+    "develop_in_nrf54lm20b": true,
+    "zephyr_sdk": "1.0.1",
+    "arm_gcc": "14.3.0",
+    "device_pm_enabled": false,
+    "signed_firmware_sha256": "0658ac2eb2d17218590dc7c256bc53bfa841cd5ecc74e11c6ac0b610363b0144",
+    "flash_used_bytes": 767952,
+    "static_ram_used_bytes": 122972,
+    "generated_pwmio_capability_retained": true,
+    "flashed": false,
+    "warnings": "Existing unsupported-driver generation warnings remain"
+  },
+  "actual_compile_database_preflight": {
+    "exact_owned_units_selected": ["PWMOut.c", "pwm_timing.c"],
+    "intended_build_object_output_selected": true,
+    "arm_compiler_preprocessing": "passed for both units in temporary output files",
+    "source_operands_per_preprocessing_command": 1,
+    "warnings": "Existing CIRCUITPY_INTERNAL_NVM_SIZE macro redefinition warning during preprocessing"
+  },
+  "physical_retest": {
+    "status": "not run; DK, debug probe and scope unavailable",
+    "historical_measured_source_commit": "25d60b8fa56140b89ea7e7b453afa62dbe275ab8",
+    "historical_measured_signed_firmware_sha256": "cc19654b6239a1ec1dcf8f4f5ad96db2f211d637fae597c4178e6485f36d1e24",
+    "historical_ad3_and_siglent_results_unchanged": true
+  },
+  "remaining_limits": [
+    "No PM lifecycle restoration feature is implemented or claimed",
+    "A dynamic PWM pool containing center alignment remains conservatively unavailable",
+    "New firmware requires a physical rerun when the DK is reconnected",
+    "Full Linux native_sim suite was not run",
+    "Historical MISRA analysis was not rerun; full MISRA C:2025 compliance remains unclaimed"
+  ]
+}

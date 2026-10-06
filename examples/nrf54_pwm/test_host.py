@@ -39,7 +39,7 @@ typedef struct { bool in_use; bool routed; uint8_t pin_count; } iobroker_state_t
 static iobroker_state_t claim;
 static int fail_allocate, fail_init, fail_clock, fail_set_count, fail_deinit;
 static uint64_t clock_hz;
-static uint32_t hw_period, hw_pulse, set_calls;
+static uint32_t hw_period, hw_pulse, set_calls, boundary_calls;
 static jmp_buf exception;
 static int last_error;
 static unsigned cases;
@@ -53,12 +53,14 @@ static bool iobroker_state_find(const struct device *device, iobroker_state_t **
 CHECKED_RELEASE
 
 int device_init(const struct device *device) {
+    boundary_calls++;
     assert(device == &dev);
     if (fail_init != 0) { return fail_init; }
     dev.ready = true;
     return 0;
 }
 int device_deinit(const struct device *device) {
+    boundary_calls++;
     assert(device == &dev);
     if (fail_deinit != 0) { return fail_deinit; }
     if (!dev.ready) { return -EPERM; }
@@ -69,6 +71,7 @@ int device_deinit(const struct device *device) {
 }
 bool device_is_ready(const struct device *device) { return device->ready; }
 int iobroker_pwm_allocate(uint16_t pin, const struct device **out) {
+    boundary_calls++;
     if (fail_allocate != 0) { return fail_allocate; }
     if (pin == 0) { return -EINVAL; }
     if (claim.in_use) { return -ENODEV; }
@@ -77,6 +80,7 @@ int iobroker_pwm_allocate(uint16_t pin, const struct device **out) {
     return 0;
 }
 int pwm_get_cycles_per_sec(const struct device *device, uint32_t channel, uint64_t *out) {
+    boundary_calls++;
     assert(device == &dev && channel == 0);
     if (fail_clock != 0) { return fail_clock; }
     *out = clock_hz;
@@ -84,6 +88,7 @@ int pwm_get_cycles_per_sec(const struct device *device, uint32_t channel, uint64
 }
 int pwm_set_cycles(const struct device *device, uint32_t channel, uint32_t period,
     uint32_t pulse, uint32_t flags) {
+    boundary_calls++;
     assert(device == &dev && dev.ready && channel == 0 && flags == 0);
     assert(period != 0 && pulse <= period);
     set_calls++;
@@ -102,7 +107,7 @@ static void reset(void) {
     claim = (iobroker_state_t){0};
     fail_allocate = fail_init = fail_clock = fail_set_count = fail_deinit = 0;
     clock_hz = PWMIO_NRF_CLOCK_HZ;
-    hw_period = hw_pulse = set_calls = 0;
+    hw_period = hw_pulse = set_calls = boundary_calls = 0;
     last_error = 0;
 }
 #define EXPECT_ERROR(code, expected) do { \
@@ -112,6 +117,30 @@ static void reset(void) {
 int main(void) {
     const mcu_pin_obj_t pin = {1};
     pwmio_pwmout_obj_t self;
+    #if defined(CONFIG_PM_DEVICE) || defined(CONFIG_PM_DEVICE_RUNTIME)
+    const uint32_t frequencies[] = {4, 500, 4000000};
+    const uint16_t duties[] = {0, 32768, 65535};
+    for (size_t f = 0; f < sizeof(frequencies) / sizeof(frequencies[0]); f++) {
+        for (size_t d = 0; d < sizeof(duties) / sizeof(duties[0]); d++) {
+            for (unsigned variable = 0; variable < 2; variable++) {
+                reset();
+                self = (pwmio_pwmout_obj_t){.pin = &pin, .device = &dev,
+                    .programmed = true, .pulse_cycles = 123, .duty_cycle = 456};
+                assert(common_hal_pwmio_pwmout_construct(&self, &pin, duties[d],
+                    frequencies[f], variable != 0) == PWMOUT_INITIALIZATION_ERROR);
+                assert(self.pin == NULL && self.device == NULL && !self.programmed);
+                assert(self.timing.period_cycles == 0 && self.pulse_cycles == 0);
+                assert(self.duty_cycle == 0 && self.variable_frequency == (variable != 0));
+                assert(common_hal_pwmio_pwmout_deinited(&self));
+                common_hal_pwmio_pwmout_deinit(&self);
+                assert(boundary_calls == 0 && !claim.in_use && !dev.ready);
+                assert(hw_period == 0 && hw_pulse == 0 && set_calls == 0 && last_error == 0);
+                cases++;
+            }
+        }
+    }
+    printf("{\"configuration_rejections\":%u,\"hardware_calls\":%u}\n", cases, boundary_calls);
+    #else
     const uint32_t invalid[] = {0, 1, 2, 3, 4000001, UINT32_MAX};
     for (size_t i = 0; i < sizeof(invalid) / sizeof(invalid[0]); i++) {
         reset();
@@ -146,11 +175,7 @@ int main(void) {
     assert(common_hal_pwmio_pwmout_get_frequency(&self) == 500);
     assert(hw_period == 32000 && hw_pulse == 16000);
     common_hal_pwmio_pwmout_set_duty_cycle(&self, 32768);
-    #ifndef CONFIG_PM_DEVICE
     assert(set_calls == 1);
-    #else
-    assert(set_calls == 2);
-    #endif
     common_hal_pwmio_pwmout_set_duty_cycle(&self, 0);
     assert(hw_pulse == 0);
     common_hal_pwmio_pwmout_set_duty_cycle(&self, 65535);
@@ -182,13 +207,8 @@ int main(void) {
         common_hal_pwmio_pwmout_deinit(&self);
         assert(!claim.in_use && !dev.ready); cases++;
     }
-    printf("{\"lifecycle_cases\":%u,\"pm_build\":%s}\n", cases,
-    #ifdef CONFIG_PM_DEVICE
-        "true"
-    #else
-        "false"
+    printf("{\"lifecycle_cases\":%u,\"pm_build\":false}\n", cases);
     #endif
-    );
 }
 """
 
@@ -233,11 +253,17 @@ def main():
         ]
         harness = temp / "test.c"
         harness.write_text(HARNESS.replace("CHECKED_RELEASE", release_function()))
-        for pm in (False, True):
-            executable = temp / ("lifecycle_pm" if pm else "lifecycle")
+        configurations = (
+            ("no_pm", []),
+            ("pm", ["-DCONFIG_PM_DEVICE=1"]),
+            ("runtime_pm", ["-DCONFIG_PM_DEVICE_RUNTIME=1"]),
+            ("pm_and_runtime_pm", ["-DCONFIG_PM_DEVICE=1", "-DCONFIG_PM_DEVICE_RUNTIME=1"]),
+        )
+        for name, defines in configurations:
+            executable = temp / name
             subprocess.run(
                 flags
-                + (["-DCONFIG_PM_DEVICE=1"] if pm else [])
+                + defines
                 + [
                     "-fsanitize=address,undefined",
                     str(harness),
@@ -248,9 +274,7 @@ def main():
                 ],
                 check=True,
             )
-            report["pm" if pm else "no_pm"] = json.loads(
-                subprocess.check_output([str(executable)], text=True)
-            )
+            report[name] = json.loads(subprocess.check_output([str(executable)], text=True))
         library = temp / "timing.dylib"
         subprocess.run(
             flags + ["-shared", "-fPIC", str(HAL / "pwm_timing.c"), "-o", str(library)], check=True
