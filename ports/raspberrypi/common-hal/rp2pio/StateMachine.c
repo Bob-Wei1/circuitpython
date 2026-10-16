@@ -40,6 +40,7 @@ static pio_pinmask_t _current_sm_pins[NUM_PIOS][NUM_PIO_STATE_MACHINES];
 
 static int8_t _sm_dma_plus_one_write[NUM_PIOS][NUM_PIO_STATE_MACHINES];
 static int8_t _sm_dma_plus_one_read[NUM_PIOS][NUM_PIO_STATE_MACHINES];
+static int8_t _sm_dma_plus_one_reload[NUM_PIOS][NUM_PIO_STATE_MACHINES];
 
 #define SM_DMA_ALLOCATED_WRITE(pio_index, sm) (_sm_dma_plus_one_write[(pio_index)][(sm)] != 0)
 #define SM_DMA_GET_CHANNEL_WRITE(pio_index, sm) (_sm_dma_plus_one_write[(pio_index)][(sm)] - 1)
@@ -130,10 +131,24 @@ static void rp2pio_dma_disable_irq(uint channel) {
 static void rp2pio_statemachine_clear_dma_write(int pio_index, int sm) {
     if (SM_DMA_ALLOCATED_WRITE(pio_index, sm)) {
         int channel_write = SM_DMA_GET_CHANNEL_WRITE(pio_index, sm);
+        common_hal_mcu_disable_interrupts();
         rp2pio_dma_disable_irq(channel_write);
         MP_STATE_PORT(background_pio_write)[channel_write] = NULL;
+        // RP2350-E5: disable both sides of the chain before aborting either.
+        hw_clear_bits(&dma_hw->ch[channel_write].al1_ctrl, DMA_CH0_CTRL_TRIG_EN_BITS);
+        int channel_reload = _sm_dma_plus_one_reload[pio_index][sm] - 1;
+        if (channel_reload != NO_DMA_CHANNEL) {
+            hw_clear_bits(&dma_hw->ch[channel_reload].al1_ctrl, DMA_CH0_CTRL_TRIG_EN_BITS);
+            dma_channel_abort(channel_reload);
+        }
         dma_channel_abort(channel_write);
+        dma_channel_acknowledge_irq0(channel_write);
+        if (channel_reload != NO_DMA_CHANNEL) {
+            dma_channel_unclaim(channel_reload);
+            _sm_dma_plus_one_reload[pio_index][sm] = 0;
+        }
         dma_channel_unclaim(channel_write);
+        common_hal_mcu_enable_interrupts();
     }
     SM_DMA_CLEAR_CHANNEL_WRITE(pio_index, sm);
 }
@@ -1329,6 +1344,49 @@ uint8_t rp2pio_statemachine_program_offset(rp2pio_statemachine_obj_t *self) {
     return _current_program_offset[pio_index][sm];
 }
 
+static bool same_write_buffer(const sm_buf_info *a, const sm_buf_info *b) {
+    return a->info.buf == b->info.buf && a->info.len == b->info.len;
+}
+
+static void prepare_dma_loop(rp2pio_statemachine_obj_t *self, int channel_write) {
+    uint pio_index = pio_get_index(self->pio);
+    uint sm = self->state_machine;
+    if (_sm_dma_plus_one_reload[pio_index][sm] != 0 ||
+        self->loop_write_buf_info.info.len == 0 ||
+        !same_write_buffer(&self->loop_write_buf_info, &self->loop2_write_buf_info)) {
+        return;
+    }
+    int channel_reload = dma_claim_unused_channel(false);
+    if (channel_reload == NO_DMA_CHANNEL) {
+        // Preserve interrupt-driven operation when no spare channel is available.
+        return;
+    }
+    _sm_dma_plus_one_reload[pio_index][sm] = channel_reload + 1;
+    dma_channel_config config = dma_channel_get_default_config(channel_reload);
+    channel_config_set_transfer_data_size(&config, DMA_SIZE_32);
+    channel_config_set_read_increment(&config, false);
+    channel_config_set_write_increment(&config, false);
+    channel_config_set_irq_quiet(&config, true);
+    // Both pointers stay fixed. Each trigger reloads the one-word count, so
+    // neither this channel nor the data channel needs CPU service to repeat.
+    dma_channel_configure(channel_reload, &config,
+        &dma_hw->ch[channel_write].al3_read_addr_trig,
+        &self->current_write_buf.info.buf, 1, false);
+}
+
+static void stop_dma_loop(rp2pio_statemachine_obj_t *self, int channel_write) {
+    int channel_reload = _sm_dma_plus_one_reload[pio_get_index(self->pio)][self->state_machine] - 1;
+    hw_clear_bits(&dma_hw->ch[channel_reload].al1_ctrl, DMA_CH0_CTRL_TRIG_EN_BITS);
+    hw_write_masked(&dma_hw->ch[channel_write].al1_ctrl,
+        channel_write << DMA_CH0_CTRL_TRIG_CHAIN_TO_LSB, DMA_CH0_CTRL_TRIG_CHAIN_TO_BITS);
+    dma_channel_abort(channel_reload);
+    self->dma_loop_write = false;
+    // Discard completions already restarted by hardware. Only the current
+    // buffer's completion may advance the newly queued sequence.
+    dma_channel_acknowledge_irq0(channel_write);
+    dma_irqn_set_channel_enabled(0, channel_write, true);
+}
+
 bool common_hal_rp2pio_statemachine_background_write(rp2pio_statemachine_obj_t *self, uint8_t stride_in_bytes, bool swap) {
 
     uint8_t pio_index = pio_get_index(self->pio);
@@ -1392,6 +1450,15 @@ bool common_hal_rp2pio_statemachine_background_write(rp2pio_statemachine_obj_t *
         self->next_write_buf_3 = self->loop2_write_buf_info;
         self->pending_buffers_write = pending_buffers_write;
 
+        int channel_write = SM_DMA_GET_CHANNEL_WRITE(pio_index, sm);
+        if (self->dma_loop_write) {
+            stop_dma_loop(self, channel_write);
+            if (!dma_channel_is_busy(channel_write)) {
+                dma_channel_acknowledge_irq0(channel_write);
+                self->dma_completed_write = true;
+            }
+        }
+        prepare_dma_loop(self, channel_write);
         if (self->dma_completed_write && self->next_write_buf_1.info.len) {
             rp2pio_statemachine_dma_complete_write(self, SM_DMA_GET_CHANNEL_WRITE(pio_index, sm));
             self->dma_completed_write = false;
@@ -1422,6 +1489,8 @@ bool common_hal_rp2pio_statemachine_background_write(rp2pio_statemachine_obj_t *
 
     self->pending_buffers_write = pending_buffers_write;
     self->dma_completed_write = false;
+    self->dma_loop_write = false;
+    prepare_dma_loop(self, channel_write);
 
     self->background_stride_in_bytes = stride_in_bytes;
     self->byteswap = swap;
@@ -1438,6 +1507,17 @@ bool common_hal_rp2pio_statemachine_background_write(rp2pio_statemachine_obj_t *
         self->once_write_buf_info.info.len / stride_in_bytes,
         false);
 
+    int channel_reload = _sm_dma_plus_one_reload[pio_index][sm] - 1;
+    if (channel_reload != NO_DMA_CHANNEL && pending_buffers_write == 1 &&
+        same_write_buffer(&self->current_write_buf, &self->next_write_buf_1) &&
+        same_write_buffer(&self->current_write_buf, &self->next_write_buf_2)) {
+        // Chain from the first transfer too; its completion IRQ only updates
+        // pending_write and does not restart an already running transfer.
+        hw_write_masked(&dma_hw->ch[channel_write].al1_ctrl,
+            channel_reload << DMA_CH0_CTRL_TRIG_CHAIN_TO_LSB, DMA_CH0_CTRL_TRIG_CHAIN_TO_BITS);
+        self->dma_loop_write = true;
+    }
+
     common_hal_mcu_disable_interrupts();
 
     MP_STATE_PORT(background_pio_write)[channel_write] = self;
@@ -1449,6 +1529,12 @@ bool common_hal_rp2pio_statemachine_background_write(rp2pio_statemachine_obj_t *
 }
 
 void rp2pio_statemachine_dma_complete_write(rp2pio_statemachine_obj_t *self, int channel_write) {
+    if (self->dma_loop_write) {
+        self->pending_buffers_write = 0;
+        self->switched_write_buffers = true;
+        dma_irqn_set_channel_enabled(0, channel_write, false);
+        return;
+    }
     self->current_write_buf = self->next_write_buf_1;
     self->next_write_buf_1 = self->next_write_buf_2;
     self->next_write_buf_2 = self->next_write_buf_3;
@@ -1457,6 +1543,19 @@ void rp2pio_statemachine_dma_complete_write(rp2pio_statemachine_obj_t *self, int
     if (self->current_write_buf.info.buf) {
         if (self->pending_buffers_write > 0) {
             self->pending_buffers_write--;
+        }
+        int channel_reload = _sm_dma_plus_one_reload[pio_get_index(self->pio)][self->state_machine] - 1;
+        if (channel_reload != NO_DMA_CHANNEL && self->pending_buffers_write == 0 &&
+            same_write_buffer(&self->current_write_buf, &self->next_write_buf_1) &&
+            same_write_buffer(&self->current_write_buf, &self->next_write_buf_2) &&
+            same_write_buffer(&self->current_write_buf, &self->next_write_buf_3)) {
+            // A repeated buffer can be restarted entirely in hardware. The
+            // alias write reloads the transfer count as well as the read address.
+            hw_set_bits(&dma_hw->ch[channel_reload].al1_ctrl, DMA_CH0_CTRL_TRIG_EN_BITS);
+            hw_write_masked(&dma_hw->ch[channel_write].al1_ctrl,
+                channel_reload << DMA_CH0_CTRL_TRIG_CHAIN_TO_LSB, DMA_CH0_CTRL_TRIG_CHAIN_TO_BITS);
+            dma_irqn_set_channel_enabled(0, channel_write, false);
+            self->dma_loop_write = true;
         }
         dma_channel_set_read_addr(channel_write, self->current_write_buf.info.buf, false);
         dma_channel_set_trans_count(channel_write, self->current_write_buf.info.len / self->background_stride_in_bytes, true);
@@ -1472,6 +1571,7 @@ bool common_hal_rp2pio_statemachine_stop_background_write(rp2pio_statemachine_ob
     uint8_t pio_index = pio_get_index(self->pio);
     uint8_t sm = self->state_machine;
     rp2pio_statemachine_clear_dma_write(pio_index, sm);
+    self->dma_loop_write = false;
     memset(&self->current_write_buf, 0, sizeof(self->current_write_buf));
     memset(&self->next_write_buf_1, 0, sizeof(self->next_write_buf_1));
     memset(&self->next_write_buf_2, 0, sizeof(self->next_write_buf_2));
