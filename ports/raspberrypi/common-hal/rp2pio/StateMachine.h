@@ -143,6 +143,7 @@ typedef struct {
     int background_stride_in_bytes;
     bool dma_completed_write, byteswap;
     bool dma_completed_read;
+    bool dma_loop_write;
     #if PICO_PIO_VERSION > 0
     memorymap_addressrange_obj_t rxfifo_obj;
     #endif
